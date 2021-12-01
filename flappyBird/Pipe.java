@@ -8,6 +8,7 @@ public class Pipe {
     private Pane gamePane;
     private Rectangle topPipe;
     private Rectangle bottomPipe;
+
     public Pipe(Pane gamePane) {
         this.gamePane=gamePane;
         this.setUpPipes();
@@ -17,8 +18,8 @@ public class Pipe {
         int lowY=Constants.Y_OFFSET_MIN;
         int highY=Constants.Y_OFFSET_MAX;
         int topHeight=lowY + (int) ((highY - lowY + 1) * Math.random());
-        this.topPipe=new Rectangle(40,0,Constants.PIPE_WIDTH,topHeight);
-        this.bottomPipe=new Rectangle(40,topHeight+Constants.PIPE_GAP,Constants.PIPE_WIDTH,Constants.GAME_PANE_HEIGHT-topHeight-Constants.PIPE_GAP);
+        this.topPipe=new Rectangle(Constants.GAME_PANE_WIDTH-Constants.PIPE_WIDTH,0,Constants.PIPE_WIDTH,topHeight);
+        this.bottomPipe=new Rectangle(Constants.GAME_PANE_WIDTH-Constants.PIPE_WIDTH,topHeight+Constants.PIPE_GAP,Constants.PIPE_WIDTH,Constants.GAME_PANE_HEIGHT-topHeight-Constants.PIPE_GAP);
         this.gamePane.getChildren().addAll(topPipe,bottomPipe);
         topPipe.setFill(Color.GREEN);
         bottomPipe.setFill(Color.GREEN);
@@ -43,6 +44,20 @@ public class Pipe {
     }
     public void removeFromPane(){
         this.gamePane.getChildren().removeAll(this.topPipe,this.bottomPipe);
+    }
+    public boolean checkIntersectionTopPipe(ManualBird manualBird){
+        if(this.topPipe.intersects(manualBird.getLayOutBounds())){
+            return true;
+        }
+        return false;
+
+    }
+    public boolean checkIntersectionBottomPipe(ManualBird manualBird){
+        if( this.bottomPipe.intersects(manualBird.getLayOutBounds())){
+            return true;
+        }
+        return false;
+
     }
 
 }

@@ -31,7 +31,6 @@ public class Tetris implements Playable {
     private Label scoreLabel;
     private Label highScoreLabel;
     private Difficulty difficulty;
-    private Label gameOverLabel;
     private VBox buttonPane2;
     private BorderPane root;
 
@@ -59,20 +58,12 @@ public class Tetris implements Playable {
         this.highScore = 0;
         this.setUpScoreLabels();
         this.difficulty = Difficulty.EASY;
-        this.gameOverLabel = new Label("Game Over");
         this.difficultyButtons();
-        //this.gamePane.setOnKeyPressed((KeyEvent e) -> this.handleKeyPressed(e));
         this.gamePane.setFocusTraversable(true);
     }
     @Override
 
     public void handleKeyPressed(KeyEvent e) {
-
-//        if(!this.isPaused){
-//            if(keyPressed==KeyCode.P){
-//                this.pause();
-//            }
-//        } else{
             KeyCode keyPressed = e.getCode();
                 switch (keyPressed) {
                     case LEFT://this moves the pieces to the left.
@@ -147,32 +138,19 @@ public class Tetris implements Playable {
         }
         this.rowScore();
         this.board.clearLine();
-        this.gameOver();
-    }
-
-    @Override
-    public void back(){
-        this.root.getChildren().clear();
     }
 
     /**
      * This method ends the game when columns are full (pieces reach the top of the paneHeight).
      */
     @Override
-    public void gameOver() {
-        for (int col = 1; col < Constants.NUM_COLS - 1; col++) {
+    public boolean gameOver() {
+        for (int col = 1; col < Constants.NUM_COLS-1; col++) {
             if (this.board.getBoard()[1][col] != null) {
-                this.gameOverLabel.setTranslateX(Constants.GAME_OVER_X);
-                this.gameOverLabel.setTranslateY(Constants.GAME_OVER_Y);
-                this.gameOverLabel.setFont(Font.font(Constants.GAME_OVER_FONT));
-                this.gameOverLabel.setAlignment(Pos.CENTER);
-                this.gamePane.getChildren().add(gameOverLabel);
-                this.timeline.stop();
-                this.gamePane.setFocusTraversable(false);
-                this.gamePane.setOnKeyPressed(null);
-
+                return true;
             }
         }
+        return false;
     }
 
     /**
@@ -180,33 +158,16 @@ public class Tetris implements Playable {
      */
     @Override
     public void reStart() {
-        this.timeline.pause();
+        this.timeline.stop();
         this.score = 0;
         this.gamePane.getChildren().clear();
         this.scoreLabel.setText("score: " + this.score);
         this.board.setUpBoard();
         this.generatePieces();
+        System.out.println(this.gameOver());
         this.timeline.play();
-    }
-    @Override
-    public void pause(){
-//        this.paused.setFont(Font.font("ARIAL", FontPosture.ITALIC, Constants.FONT_SIZE_PAUSED));
-//        this.paused.setLayoutX(Constants.LAYOUT_X * Constants.SQUARE_SIZE);
-//        this.paused.setLayoutY(Constants.LAYOUT_Y * Constants.SQUARE_SIZE);
-//        this.paused.setTextFill(Color.RED);
-//        if (this.isPaused) {
-//            this.timeline.pause();
-//            this.gamePane.getChildren().add(this.paused);
-//            this.isPaused = false;
-//        } else {
-//            this.timeline.play();
-//            this.gamePane.getChildren().remove(this.paused);
-//            this.gamePane.setFocusTraversable(true);
-//            this.isPaused = true;
-//        }
 
     }
-
 
     /**
      * this  method changes the difficulty of the game by changing the rate of the timeline

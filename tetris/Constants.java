@@ -27,9 +27,8 @@ public class Constants {
     public static final int BUTTON2_PANE_HEIGHT =50;
 
     //constants for game over label
-    public static final int GAME_OVER_X = 175;
-    public static final int GAME_OVER_Y = 380;
-    public static final int GAME_OVER_FONT = 30;
+    public static final int GAME_OVER_X = 100;
+    public static final int GAME_OVER_Y = 200;
 
     //constants for line clearing scores
     public static final int FOUR_LINES = 200;

@@ -30,7 +30,9 @@ public class Arcade {
     private Button quitButton;
     private boolean isPaused;
     private Label paused;
-    private Pane pausedPane;
+    private Playable playable;
+   private Label gameOverLabel;
+
 
     public Arcade(Stage stage) {
         this.stage=stage;
@@ -39,18 +41,17 @@ public class Arcade {
         this.gamePane = new Pane();//instantiates the gamePane
         this.buttonPane = new HBox();//instantiates the buttonPane
         this.arcadePane = new VBox();//Contains the different arcade games
-        this.root.setTop(this.buttonPane);//puts the buttonPane on top
-        this.buttonPane.setAlignment(Pos.CENTER);
-        this.root.setCenter(this.arcadePane);
-        this.buttonPane.setSpacing(Constants.BUTTON_PANE_SPACING);
         this.timeline=new Timeline();
+        this.root.setCenter(this.arcadePane);
+        this.styleGameOVerLabel();
+        this.buttonPane.setSpacing(Constants.BUTTON_PANE_SPACING);
         this.styleArcadeLabel();
         this.setUpGames();
         this.createQuitButton();
         this.stage.sizeToScene();
         this.isPaused=true;
         this.paused=new Label("PAUSED");
-        this.pausedPane=new Pane();
+
 
     }
 
@@ -59,6 +60,27 @@ public class Arcade {
      */
     public BorderPane getRoot(){
         return this.root;
+    }
+
+    /**
+     * this method styles the gameOver label
+     */
+    private void styleGameOVerLabel(){
+        this.gameOverLabel=new Label("GAME OVER!!");
+        this.gameOverLabel.setTranslateX(evolution.tetris.Constants.GAME_OVER_X);
+        this.gameOverLabel.setTranslateY(evolution.tetris.Constants.GAME_OVER_Y);
+        this.gameOverLabel.setAlignment(Pos.CENTER);
+        this.gameOverLabel.setStyle("-fx-font: italic bold 40px arial, serif;-fx-text-alignment: center;-fx-text-fill: white;");
+        Color[] colors = new Color[]{Color.web("#E00009"), Color.web("#E47C00"), Color.web("#ECEF02"),
+                Color.web("#65F400"), Color.web("#51B5FF")};
+        DropShadow shadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#E02EF3"),
+                0, 0, 2, 2);
+        for (Color color : colors) {
+            DropShadow temp = new DropShadow(BlurType.GAUSSIAN, color, 1, 10, 2, 2);
+            temp.setInput(shadow);
+            shadow = temp;
+        }
+        this.gameOverLabel.setEffect(shadow);
     }
 
     /**
@@ -124,39 +146,52 @@ public class Arcade {
      * creates the restart and back buttons and call the restart and back method
      * @param game takes in enum
      */
-    public void startGame(Game game) {//this method is getting long. I need to delegate the work
-        Playable playable = game.createGame(this.timeline, this.root, this.gamePane, this.buttonPane, this.arcadePane);
+    public void startGame(Game game) {
+        this.playable = game.createGame(this.timeline, this.root, this.gamePane, this.buttonPane);
+        this.root.setCenter(this.gamePane);
+        KeyFrame keyframe = new KeyFrame(Duration.seconds(1), (ActionEvent e) -> this.updateGame());
+        this.timeline.getKeyFrames().add(keyframe);
+        this.timeline.setCycleCount(Animation.INDEFINITE);
+        this.timeline.play();
+        this.createGameButtons();
+        this.gamePane.setOnKeyPressed((KeyEvent e) -> this.handlePause(e));
+        this.gamePane.setFocusTraversable(true);
+        this.stage.sizeToScene();
+    }
+
+    /**
+     * this method creates the game buttons: restart, quit and back buttons adds them to the buttonPane.
+     */
+    private void createGameButtons(){
         Button reStartButton = new Button("Restart");//creates the restart button
         Button backButton = new Button("Back");//this creates the back method
         reStartButton.setFocusTraversable(false);
         backButton.setFocusTraversable(false);
         this.buttonPane.setFocusTraversable(false);
-        reStartButton.setOnAction((ActionEvent e) -> playable.reStart());
-        backButton.setOnAction((ActionEvent e) -> playable.back());//TODO problem with this one
+        reStartButton.setOnAction((ActionEvent e) -> this.playable.reStart());
+        backButton.setOnAction((ActionEvent e) -> this.back());
         this.buttonPane.getChildren().addAll(backButton, quitButton, reStartButton);
         this.buttonPane.setPrefWidth(Constants.BUTTON_PANE_WIDTH);
         this.buttonPane.setPrefHeight(Constants.BUTTON_PANE_HEIGHT);
-        KeyFrame keyframe = new KeyFrame(Duration.seconds(1), (ActionEvent e) -> playable.updateGame());
-        this.timeline.getKeyFrames().add(keyframe);
-        this.timeline.setCycleCount(Animation.INDEFINITE);
-        this.timeline.play();
-        this.root.setCenter(this.gamePane);
-        this.stage.sizeToScene();
-        this.gamePane.setOnKeyPressed((KeyEvent e) -> playable.handleKeyPressed(e));
-        this.gamePane.setFocusTraversable(true);
+        this.root.setTop(this.buttonPane);//puts the buttonPane on top
+        this.buttonPane.setAlignment(Pos.CENTER);
 
 
     }
-    private void pause() {//TODO makes sense why the pause should be in the arcade class
+
+    /**
+     * this method pauses the game when the p key is pressed
+     */
+
+    private void pause() {
         this.paused.setFont(Font.font("ARIAL", FontPosture.ITALIC, evolution.tetris.Constants.FONT_SIZE_PAUSED));
         this.paused.setLayoutX(evolution.tetris.Constants.LAYOUT_X * evolution.tetris.Constants.SQUARE_SIZE);
         this.paused.setLayoutY(evolution.tetris.Constants.LAYOUT_Y * evolution.tetris.Constants.SQUARE_SIZE);
         this.paused.setTextFill(Color.RED);
         if (this.isPaused) {
             this.timeline.pause();
-            this.pausedPane.getChildren().add(paused);
+            this.gamePane.getChildren().add(paused);
             this.isPaused = false;
-            System.out.println(this.isPaused);
         } else {
             this.timeline.play();
             this.gamePane.getChildren().remove(paused);
@@ -164,17 +199,47 @@ public class Arcade {
             this.isPaused = true;
         }
     }
-    private void handleKeyPressed(KeyEvent e){
-        KeyCode keyPressed = e.getCode();
-        System.out.println("hello");
-        switch (keyPressed) {
-            case P:
-                System.out.println("hello");
-               // this.pause();
-                break;
+
+    /**
+     * this method stops all the key inputs except the p key when the game is paused
+     * @param e
+     */
+    private void handlePause(KeyEvent e) {
+            KeyCode keyPressed = e.getCode();
+            if (keyPressed == KeyCode.P) {
+                this.pause();
+        } else if(this.isPaused) {
+            this.playable.handleKeyPressed(e);
+
+        }
+    }
+    private void back(){//TODO BUG: when you go from the manual bird to tetris: the timeline increases and the background image is stil there
+        this.gamePane.getChildren().clear();
+        this.buttonPane.getChildren().clear();
+        this.root.getChildren().clear();
+        this.root.setCenter(this.arcadePane);
+        this.stage.sizeToScene();
+        this.timeline.stop();
+
+    }
+    /**
+     * this method adds the gameOver label to the gamePane when the game is over
+     */
+    private void gameOver(){
+        if(this.playable.gameOver()){
+          this.timeline.stop();
+            this.gamePane.getChildren().add(this.gameOverLabel);
+            //System.out.println(this.playable.gameOver());
         }
 
     }
+    private void updateGame(){
+        this.gameOver();
+        this.playable.updateGame();
+
+    }
+
+
 
 
 }
