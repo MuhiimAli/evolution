@@ -231,6 +231,7 @@ public class Arcade {
             this.timeline.stop();
             this.gamePane.getChildren().add(this.gameOverLabel);
             this.gameOver=false;//resetting the gameOver instance variable
+            this.gamePane.setOnKeyPressed(null);
 
         }
 

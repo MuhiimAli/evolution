@@ -25,12 +25,12 @@ public class Pipe {
         topPipe.setFill(Color.GREEN);
         bottomPipe.setFill(Color.GREEN);
     }
+
+    /**
+     * @return returns the x location of the pipe
+     */
     public double getXLoc(){
         return this.bottomPipe.getX();
-
-    }
-    public double getYLoc(){
-        return this.bottomPipe.getY();
 
     }
     public void setXLoc(double x){
@@ -38,21 +38,30 @@ public class Pipe {
         this.bottomPipe.setX(x);
 
     }
-    public void setYLoc(double y){
-        this.bottomPipe.setY(y);
 
-
-    }
+    /**
+     * this method removes the pipes graphically
+     */
     public void removeFromPane(){
         this.gamePane.getChildren().removeAll(this.topPipe,this.bottomPipe);
 
     }
+
+    /**
+     * this method gets the bounds of the bottom pipe
+     * @return
+     */
     public Bounds getBoundsTopPipe(){
         return this.topPipe.getLayoutBounds();
     }
+
+    /**
+     * this method returns the bounds of the top pipe
+     * @return
+     */
     public Bounds getBoundsBottomPipe(){
         return this.bottomPipe.getLayoutBounds();
-
     }
+
 
 }

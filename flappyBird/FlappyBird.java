@@ -8,13 +8,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
-import java.util.ArrayList;
-
 public class FlappyBird implements Playable {
     private Pane gamePane;
     private Timeline timeline;
-    private ArrayList<Pipe> pipeArraylist;
-    private Pipe pipes;
     private VBox scorePane;
     private BorderPane root;
     private Flappable bird;
@@ -23,6 +19,7 @@ public class FlappyBird implements Playable {
     private int score;
     private int highScore;
     private Boolean isRunning;
+    private PipeManager pipeManager;
 
     public FlappyBird(Timeline timeline, BorderPane root, Pane gamePane,DifferentModes birds) {
         this.root = root;
@@ -34,9 +31,6 @@ public class FlappyBird implements Playable {
         this.root.setBottom(this.scorePane);
         this.gamePane.setPrefHeight(Constants.GAME_PANE_HEIGHT);
         this.gamePane.setPrefWidth(Constants.GAME_PANE_WIDTH);
-        this.pipeArraylist = new ArrayList<>();
-        this.pipes = new Pipe(this.gamePane);
-        this.pipeArraylist.add(this.pipes);
         this.setUpBackground();
         this.score = 0;
         this.highScore = 0;
@@ -46,7 +40,8 @@ public class FlappyBird implements Playable {
         this.scorePane.getChildren().addAll(this.scoreLabel, this.highScoreLabel);
         this.highScoreLabel.setFont(Font.font(evolution.tetris.Constants.FONT_SIZE));
         this.timeline.setRate(1 / Constants.DURATION);
-        this.bird=birds.createBird(this.gamePane,pipes);
+        this.pipeManager =new PipeManager(this.gamePane);
+        this.bird=birds.createBird(this.gamePane,this.pipeManager);
         this.isRunning=true;
 
 
@@ -67,55 +62,21 @@ public class FlappyBird implements Playable {
     @Override
     public void updateGame() {
         this.bird.updateBirdVelocity();
-        this.scrollPipes();
-        this.deletePipes();
+        this.pipeManager.scrollPipes();
+        this.pipeManager.deletePipes();
         this.setScoreLabel();
     }
 
-    /**
-     * this method generates new pipes
-     */
-    private void generatePipes() {
-        while (this.pipes.getXLoc() <= Constants.GAME_PANE_WIDTH) {
-                Pipe pipes = new Pipe(this.gamePane);
-                pipes.setXLoc(pipes.getXLoc()+Constants.PIPE_HORIZONTAL_DISTANCE);
-                this.pipeArraylist.add(pipes);
-                this.pipes = pipes;
-            }
-    }
-
-    /**
-     * this method makes the pipes scroll across the screen at a constant rate
-     */
-    private void scrollPipes(){
-        for(int i=0;i<this.pipeArraylist.size();i++) {
-            this.pipeArraylist.get(i).setXLoc(this.pipeArraylist.get(i).getXLoc()-Constants.SCROLL_RATE);
-        }
-        this.generatePipes();
-
-
-    }
-
-    /**
-     * this method deletes the pipes when they're done scrolling, when they're off the screen
-     */
-    private void deletePipes(){
-            if (this.pipeArraylist.get(0).getXLoc() <=-Constants.PIPE_WIDTH){
-                this.pipeArraylist.get(0).removeFromPane();
-                this.pipeArraylist.remove(0);
-            }
-    }
     @Override
     public void reStart(){//TODO restart method bug
         this.timeline.stop();
         this.score = 0;
         this.gamePane.getChildren().clear();
         this.scoreLabel.setText("score: " + this.score);
-        this.pipes = new Pipe(this.gamePane);
-        this.pipeArraylist.add(this.pipes);
-        //this.bird=birds.createBird(this.gamePane);
-        this.scrollPipes();
-        this.deletePipes();
+        this.pipeManager=new PipeManager(this.gamePane);
+        this.pipeManager.scrollPipes();
+        this.pipeManager.deletePipes();
+        this.bird.createBirds();//this creates birds
         this.timeline.play();
     }
     @Override
@@ -131,7 +92,7 @@ public class FlappyBird implements Playable {
         this.bird.handleKeyPress(e);
     }
     private void setScoreLabel(){
-        if (this.pipeArraylist.get(0).getXLoc()==Constants.PIPE_WIDTH) {
+        if (this.pipeManager.nearestPipe().getXLoc()==Constants.PIPE_WIDTH) {
             this.score=this.score+1;
             this.highScore=Math.max(this.highScore,this.score);
             this.scoreLabel.setText("score: " + this.score);

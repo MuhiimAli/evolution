@@ -7,9 +7,9 @@ import javafx.scene.layout.Pane;
 public class MultiPlayerBird implements Flappable{
     private Pane gamePane;
     private ManualBird[] multiPlayer;
-    private Pipe pipes;
-    public MultiPlayerBird(Pane gamePane, Pipe pipes) {
-        this.pipes=pipes;
+    private PipeManager pipeManager;
+    public MultiPlayerBird(Pane gamePane, PipeManager pipeManager) {
+        this.pipeManager = pipeManager;
         this.gamePane = gamePane;
         this.createMultiPlayerBird();
         this.multiPlayer[0].setYLoc(10);
@@ -21,10 +21,9 @@ public class MultiPlayerBird implements Flappable{
     public void createMultiPlayerBird(){
         this.multiPlayer=new ManualBird[2];
         for(int i=0; i< this.multiPlayer.length;i++){
-            this.multiPlayer[i]=new ManualBird(this.gamePane, pipes);
+            this.multiPlayer[i]=new ManualBird(this.gamePane, pipeManager);
         }
     }
-
 
     /**
      * this method ends the game when both birds die
@@ -32,39 +31,58 @@ public class MultiPlayerBird implements Flappable{
     @Override
     public Boolean gameOver() {
         for (int i = 0; i < this.multiPlayer.length; i++) {
-            if (this.multiPlayer[i].checkIntersection(pipes, pipes) || this.multiPlayer[i].getYLoc()>=Constants.GAME_PANE_HEIGHT) {
-                this.multiPlayer[i].removeFromPane();
-                this.multiPlayer[i] = null;
-                System.out.println(this.multiPlayer[i]=null);
-
+            if (this.multiPlayer[i]!= null) {
+                if (this.multiPlayer[i].checkIntersection(this.pipeManager.nearestPipe(), this.pipeManager.nearestPipe())) {
+                    this.multiPlayer[i].removeFromPane();
+                    this.multiPlayer[i] = null;
+                }
+                if (this.multiPlayer[0] == null && this.multiPlayer[1] == null) {
+                    return true;
+                }
             }
         }
-        if(this.multiPlayer.length==0){
-            return true;
-        }
-        return false;
+            return false;
     }
 
-    @Override//todo perfect
+    /**
+     * this method make one of the birds jump with the spaceBar and the other one with the up arrow key
+     * @param e
+     */
+
+    @Override
     public void handleKeyPress(KeyEvent e) {
-        KeyCode keyPressed = e.getCode();
-        switch (keyPressed) {
-            case SPACE:
-                this.multiPlayer[0].jump();
-                break;
-            case UP: default:
-                this.multiPlayer[1].jump();
-                break;
+        for(int i=0;i<this.multiPlayer.length;i++) {
+            if (this.multiPlayer[i] != null) {
+                KeyCode keyPressed = e.getCode();
+                switch (keyPressed) {
+                    case SPACE:
+                        this.multiPlayer[0].jump();
+                        break;
+                    case UP:
+                    default:
+                        this.multiPlayer[1].jump();
+                        break;
+                }
+            }
         }
     }
-    @Override// todo perfect
-    public void updateBirdVelocity(){
-        System.out.println(this.gameOver());
-        for(int i=0;i< this.multiPlayer.length;i++){
-            this.multiPlayer[i].updateBirdVelocity();
 
+    /**
+     * this method updates the velocity of both birds. It makes them go down
+     */
+    @Override
+    public void updateBirdVelocity(){
+        for(int i=0;i< this.multiPlayer.length;i++){
+            if(this.multiPlayer[i]!= null) {
+                this.multiPlayer[i].updateBirdVelocity();
+            }
 
         }
+    }
+    @Override
+    public void createBirds(){
+        this.createMultiPlayerBird();
+
     }
 
 }

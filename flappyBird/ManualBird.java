@@ -15,14 +15,18 @@ public class ManualBird implements Flappable{
     private Polygon beak;
     private double velocity;
     private double position;
-    private Pipe pipes;
-    public ManualBird(Pane gamePane, Pipe pipes){
-        this.pipes=pipes;
+    private PipeManager pipeManager;
+    public ManualBird(Pane gamePane, PipeManager pipeManager){
+        this.pipeManager=pipeManager;
         this.gamePane=gamePane;
         this.createBird();
         this.setXLoc(0);
         this.setYLoc(0);
     }
+
+    /**
+     * this method creates all the components of the bird
+     */
 
     private void createBird(){
         int red = (int) (Math.random() * 256);
@@ -39,13 +43,17 @@ public class ManualBird implements Flappable{
     }
 
     @Override
-    public void updateBirdVelocity(){//TODO this can move to the manual bird class
+    public void updateBirdVelocity(){
         this.velocity = this.velocity + Constants.GRAVITY * Constants.DURATION;
         this.position = this.position + this.velocity * Constants.DURATION;
         this.setYLoc(this.position);
 
     }
-    public void jump(){//todo this can move to the manual birds class
+
+    /**
+     * this method changes the velocity of the bird negative(makes it go up)
+     */
+    public void jump(){
         if(this.body.getCenterY()>=60){
             this.velocity=Constants.REBOUND_VELOCITY;
         }
@@ -66,36 +74,55 @@ public class ManualBird implements Flappable{
         this.position=y;
 
     }
-    public double getYLoc(){
-        return this.beak.getLayoutY();
-    }
-    public double getXLoc(){
-        return this.body.getLayoutX();
-    }
+
+    /**
+     * this method removes the bird graphically
+     */
     public void removeFromPane(){
         this.gamePane.getChildren().removeAll(this.body,this.eye,this.pupil,this.beak);
     }
+
+    /**
+     * this method checks if the bird intersects with the top and bottom pipe
+     * @param top top pipe
+     * @param bottom bottom pipe
+     * @return
+     */
     public Boolean checkIntersection(Pipe top, Pipe bottom){
-        if(this.body.intersects(top.getBoundsTopPipe()) || this.body.intersects(bottom.getBoundsBottomPipe())){
+        if(this.body.intersects(top.getBoundsTopPipe())
+                || this.body.getCenterY()>=Constants.GAME_PANE_HEIGHT
+        ||this.body.intersects(bottom.getBoundsBottomPipe()) ){
             return true;
         }
         return false;
-
     }
+
+
     @Override
     public Boolean gameOver(){
-        if(this.checkIntersection(pipes, pipes)){
+        if(this.checkIntersection(this.pipeManager.nearestPipe(), this.pipeManager.nearestPipe())){
             return true;
         }
         return false;
     }
+
+    /**
+     * this method makes the bird jump when the space bar is pressed
+     * @param e
+     */
     @Override
     public void handleKeyPress(KeyEvent e) {
-        System.out.println("hello");
         KeyCode keyPressed = e.getCode();
         switch (keyPressed) {
             case SPACE: default:
                 this.jump();
         }
     }
+    @Override
+    public void createBirds(){
+        this.gamePane.getChildren().addAll(this.body,this.eye,this.pupil,this.beak);
+
+    }
+
+
 }

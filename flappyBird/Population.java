@@ -4,7 +4,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
-public class Population extends ManualBird implements Flappable{
+public class Population  implements Flappable{
 
     private Pane gamePane;
     private ArrayList<ManualBird> smartArrayList;
@@ -12,20 +12,19 @@ public class Population extends ManualBird implements Flappable{
     private Pipe pipes;
 
     public Population(Pane gamePane, Pipe pipes) {
-        super(gamePane,pipes);
         this.pipes=pipes;
         this.gamePane = gamePane;
         this.smartArrayList = new ArrayList<>();
-        this.smartBird = new ManualBird(this.gamePane,pipes);
+        //this.smartBird = new ManualBird(this.gamePane,pipes);
         this.smartArrayList.add(this.smartBird);
         this.createMultiPlayerBirds();
     }
 
     private void createMultiPlayerBirds() {
         for (int i = 0; i < this.smartArrayList.size(); i++) {
-            ManualBird smartBirds = new ManualBird(this.gamePane,pipes);
-            this.smartArrayList.add(smartBirds);
-            this.smartBird = smartBirds;
+          //  ManualBird smartBirds = new ManualBird(this.gamePane,pipes);
+           // this.smartArrayList.add(smartBirds);
+           // this.smartBird = smartBirds;
         }
     }
     @Override
@@ -39,6 +38,10 @@ public class Population extends ManualBird implements Flappable{
     }
     @Override
     public void updateBirdVelocity(){
+
+    }
+    @Override
+    public void createBirds(){
 
     }
 }
