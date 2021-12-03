@@ -1,12 +1,13 @@
 package evolution.flappyBird;
 
-import javafx.geometry.Bounds;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 
-public class ManualBird {
+public class ManualBird implements Flappable{
     private Pane gamePane;
     private Circle body;
     private Circle eye;
@@ -14,14 +15,15 @@ public class ManualBird {
     private Polygon beak;
     private double velocity;
     private double position;
-    public ManualBird(Pane gamePane){
+    private Pipe pipes;
+    public ManualBird(Pane gamePane, Pipe pipes){
+        this.pipes=pipes;
         this.gamePane=gamePane;
         this.createBird();
         this.setXLoc(0);
         this.setYLoc(0);
-
-
     }
+
     private void createBird(){
         int red = (int) (Math.random() * 256);
         int green = (int) (Math.random() * 256);
@@ -34,20 +36,19 @@ public class ManualBird {
         this.eye.setFill(Color.WHITE);
         this.beak=new Polygon(110,198,115,203,107,208);
         this.gamePane.getChildren().addAll(this.body,this.eye,this.pupil,this.beak);
-
     }
 
-    private void trackScore() {
-    }
-    public void updateBirdVelocity(){
+    @Override
+    public void updateBirdVelocity(){//TODO this can move to the manual bird class
         this.velocity = this.velocity + Constants.GRAVITY * Constants.DURATION;
         this.position = this.position + this.velocity * Constants.DURATION;
         this.setYLoc(this.position);
 
     }
-    public void jump(){
-        this.velocity=Constants.REBOUND_VELOCITY;
-
+    public void jump(){//todo this can move to the manual birds class
+        if(this.body.getCenterY()>=60){
+            this.velocity=Constants.REBOUND_VELOCITY;
+        }
 
     }
     public void setXLoc(double x){
@@ -65,9 +66,6 @@ public class ManualBird {
         this.position=y;
 
     }
-    public Bounds getLayOutBounds(){
-        return this.body.getLayoutBounds();
-    }
     public double getYLoc(){
         return this.beak.getLayoutY();
     }
@@ -77,6 +75,27 @@ public class ManualBird {
     public void removeFromPane(){
         this.gamePane.getChildren().removeAll(this.body,this.eye,this.pupil,this.beak);
     }
+    public Boolean checkIntersection(Pipe top, Pipe bottom){
+        if(this.body.intersects(top.getBoundsTopPipe()) || this.body.intersects(bottom.getBoundsBottomPipe())){
+            return true;
+        }
+        return false;
 
-
+    }
+    @Override
+    public Boolean gameOver(){
+        if(this.checkIntersection(pipes, pipes)){
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public void handleKeyPress(KeyEvent e) {
+        System.out.println("hello");
+        KeyCode keyPressed = e.getCode();
+        switch (keyPressed) {
+            case SPACE: default:
+                this.jump();
+        }
+    }
 }

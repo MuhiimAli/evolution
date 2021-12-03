@@ -4,7 +4,6 @@ import evolution.Playable;
 import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -18,15 +17,14 @@ public class FlappyBird implements Playable {
     private Pipe pipes;
     private VBox scorePane;
     private BorderPane root;
-    private ManualBird manualFlappyBird;
-    private ArrayList<ManualBird> manualBirdArraylist;
+    private Flappable bird;
     private Label scoreLabel;
     private Label highScoreLabel;
     private int score;
     private int highScore;
-    private boolean isRunning;
+    private Boolean isRunning;
 
-    public FlappyBird(Timeline timeline, BorderPane root, Pane gamePane) {
+    public FlappyBird(Timeline timeline, BorderPane root, Pane gamePane,DifferentModes birds) {
         this.root = root;
         this.gamePane = gamePane;
         this.scorePane = new VBox();
@@ -37,11 +35,9 @@ public class FlappyBird implements Playable {
         this.gamePane.setPrefHeight(Constants.GAME_PANE_HEIGHT);
         this.gamePane.setPrefWidth(Constants.GAME_PANE_WIDTH);
         this.pipeArraylist = new ArrayList<>();
-        this.manualBirdArraylist = new ArrayList<>();
         this.pipes = new Pipe(this.gamePane);
         this.pipeArraylist.add(this.pipes);
         this.setUpBackground();
-        this.manualFlappyBird = new ManualBird(this.gamePane);
         this.score = 0;
         this.highScore = 0;
         this.scoreLabel = new Label("score: " + this.score);
@@ -50,7 +46,9 @@ public class FlappyBird implements Playable {
         this.scorePane.getChildren().addAll(this.scoreLabel, this.highScoreLabel);
         this.highScoreLabel.setFont(Font.font(evolution.tetris.Constants.FONT_SIZE));
         this.timeline.setRate(1 / Constants.DURATION);
+        this.bird=birds.createBird(this.gamePane,pipes);
         this.isRunning=true;
+
 
 
     }
@@ -68,8 +66,7 @@ public class FlappyBird implements Playable {
 
     @Override
     public void updateGame() {
-        this.manualFlappyBird.updateBirdVelocity();
-       // System.out.println(this.gameOver());
+        this.bird.updateBirdVelocity();
         this.scrollPipes();
         this.deletePipes();
         this.setScoreLabel();
@@ -84,9 +81,7 @@ public class FlappyBird implements Playable {
                 pipes.setXLoc(pipes.getXLoc()+Constants.PIPE_HORIZONTAL_DISTANCE);
                 this.pipeArraylist.add(pipes);
                 this.pipes = pipes;
-
             }
-
     }
 
     /**
@@ -112,48 +107,28 @@ public class FlappyBird implements Playable {
     }
     @Override
     public void reStart(){//TODO restart method bug
-       // System.out.println("gameOver conditions: "+ isRunning);
-            this.timeline.stop();
-
-            this.score = 0;
-            this.gamePane.getChildren().clear();
-            this.scoreLabel.setText("score: " + this.score);
-            this.pipes = new Pipe(this.gamePane);
-            this.pipeArraylist.add(this.pipes);
-            this.manualFlappyBird = new ManualBird(this.gamePane);
-        System.out.println("game is over?  "+ this.gameOver());
-       // this.timeline.play();
-            this.scrollPipes();
-            this.deletePipes();
-        //this.timeline.play();
-
-
-
-       // }
-
-
-
+        this.timeline.stop();
+        this.score = 0;
+        this.gamePane.getChildren().clear();
+        this.scoreLabel.setText("score: " + this.score);
+        this.pipes = new Pipe(this.gamePane);
+        this.pipeArraylist.add(this.pipes);
+        //this.bird=birds.createBird(this.gamePane);
+        this.scrollPipes();
+        this.deletePipes();
+        this.timeline.play();
     }
     @Override
     public boolean gameOver(){
-        isRunning=this.pipeArraylist.get(0).checkIntersectionTopPipe(this.manualFlappyBird) ||
-                this.pipeArraylist.get(0).checkIntersectionBottomPipe(this.manualFlappyBird) ||
-                this.manualFlappyBird.getYLoc()>=Constants.GAME_PANE_HEIGHT;
-            if(isRunning){
-                isRunning=false;
-                return true;
+        if(this.bird.gameOver()){
+            return true;
         }
 
         return false;
     }
     @Override
     public void handleKeyPressed(KeyEvent e) {
-        KeyCode keyPressed = e.getCode();
-        switch (keyPressed) {
-            case SPACE: default:
-                this.manualFlappyBird.jump();
-                break;
-        }
+        this.bird.handleKeyPress(e);
     }
     private void setScoreLabel(){
         if (this.pipeArraylist.get(0).getXLoc()==Constants.PIPE_WIDTH) {

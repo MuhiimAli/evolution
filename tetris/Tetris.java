@@ -45,7 +45,7 @@ public class Tetris implements Playable {
         this.gamePane = gamePane;
         this.gamePane.setPrefWidth(Constants.PANE_WIDTH);
         this.gamePane.setPrefHeight(Constants.PANE_HEIGHT);
-        this.buttonPane2=new VBox();//TODO rename this one
+        this.buttonPane2=new VBox();
         this.buttonPane2.setPrefWidth(Constants.BUTTON2_PANE_WIDTH);
         this.buttonPane2.setPrefHeight(Constants.BUTTON2_PANE_HEIGHT);
         this.buttonPane = buttonPane;

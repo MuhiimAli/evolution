@@ -1,5 +1,6 @@
 package evolution.flappyBird;
 
+import javafx.geometry.Bounds;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -44,19 +45,13 @@ public class Pipe {
     }
     public void removeFromPane(){
         this.gamePane.getChildren().removeAll(this.topPipe,this.bottomPipe);
-    }
-    public boolean checkIntersectionTopPipe(ManualBird manualBird){
-        if(this.topPipe.intersects(manualBird.getLayOutBounds())){
-            return true;
-        }
-        return false;
 
     }
-    public boolean checkIntersectionBottomPipe(ManualBird manualBird){
-        if( this.bottomPipe.intersects(manualBird.getLayOutBounds())){
-            return true;
-        }
-        return false;
+    public Bounds getBoundsTopPipe(){
+        return this.topPipe.getLayoutBounds();
+    }
+    public Bounds getBoundsBottomPipe(){
+        return this.bottomPipe.getLayoutBounds();
 
     }
 

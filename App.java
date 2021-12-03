@@ -17,7 +17,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         // Create top-level object, set up the scene, and show the stage here.
-        Arcade arcade = new Arcade(stage);
+        Arcade arcade = new    Arcade(stage);
         Scene scene = new Scene(arcade.getRoot());
         stage.setScene(scene);
         stage.setTitle("Arcade");

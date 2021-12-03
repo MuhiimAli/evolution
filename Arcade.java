@@ -32,6 +32,7 @@ public class Arcade {
     private Label paused;
     private Playable playable;
    private Label gameOverLabel;
+   private Boolean gameOver;
 
 
     public Arcade(Stage stage) {
@@ -51,8 +52,7 @@ public class Arcade {
         this.stage.sizeToScene();
         this.isPaused=true;
         this.paused=new Label("PAUSED");
-
-
+        this.gameOver=true;
     }
 
     /**
@@ -222,14 +222,16 @@ public class Arcade {
         this.timeline.stop();
 
     }
-    /**
+    /**]\tyuh
      * this method adds the gameOver label to the gamePane when the game is over
      */
     private void gameOver(){
-        if(this.playable.gameOver()){
-          this.timeline.stop();
+        this.gameOver=this.playable.gameOver();
+        if(this.gameOver){
+            this.timeline.stop();
             this.gamePane.getChildren().add(this.gameOverLabel);
-            //System.out.println(this.playable.gameOver());
+            this.gameOver=false;//resetting the gameOver instance variable
+
         }
 
     }

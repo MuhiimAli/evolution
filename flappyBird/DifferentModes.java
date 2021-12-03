@@ -4,16 +4,17 @@ import javafx.scene.layout.Pane;
 
 public enum DifferentModes {
     MANUAL, MULTIPLAYER,SMART;
-    public ManualBird createBird(Pane gamePane) {
-        ManualBird flappyBird = null;
+    public Flappable createBird(Pane gamePane, Pipe pipes) {
+        Flappable flappyBird = null;
         switch (this) {
             case MANUAL:
-                flappyBird =new ManualBird(gamePane);
+                flappyBird =new ManualBird(gamePane,pipes);
                 break;
             case MULTIPLAYER:
-                flappyBird =new MultiplayerBird(gamePane);
+                flappyBird=new MultiPlayerBird(gamePane,pipes);
                 break;
             case SMART: default:
+                flappyBird=new Population(gamePane,pipes);
                 break;
 
         }
