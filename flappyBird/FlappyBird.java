@@ -20,6 +20,7 @@ public class FlappyBird implements Playable {
     private int highScore;
     private Boolean isRunning;
     private PipeManager pipeManager;
+    private DifferentModes modes;
 
     public FlappyBird(Timeline timeline, BorderPane root, Pane gamePane,DifferentModes birds) {
         this.root = root;
@@ -41,11 +42,9 @@ public class FlappyBird implements Playable {
         this.highScoreLabel.setFont(Font.font(evolution.tetris.Constants.FONT_SIZE));
         this.timeline.setRate(1 / Constants.DURATION);
         this.pipeManager =new PipeManager(this.gamePane);
-        this.bird=birds.createBird(this.gamePane,this.pipeManager);
+        this.modes=birds;
+        this.bird=this.modes.createBird(this.gamePane,this.pipeManager);
         this.isRunning=true;
-
-
-
     }
 
     /**
@@ -76,7 +75,7 @@ public class FlappyBird implements Playable {
         this.pipeManager=new PipeManager(this.gamePane);
         this.pipeManager.scrollPipes();
         this.pipeManager.deletePipes();
-        this.bird.createBirds();//this creates birds
+        this.bird=this.modes.createBird(this.gamePane,this.pipeManager);//this creates birds
         this.timeline.play();
     }
     @Override
@@ -84,7 +83,6 @@ public class FlappyBird implements Playable {
         if(this.bird.gameOver()){
             return true;
         }
-
         return false;
     }
     @Override

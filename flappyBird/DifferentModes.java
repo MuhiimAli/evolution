@@ -14,7 +14,7 @@ public enum DifferentModes {
                 flappyBird=new MultiPlayerBird(gamePane,pipeManager);
                 break;
             case SMART: default:
-                flappyBird=new Population(gamePane,pipeManager);
+                flappyBird=new SmartBird(gamePane,pipeManager);
                 break;
 
         }

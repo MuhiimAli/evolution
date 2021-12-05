@@ -8,10 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -60,6 +57,7 @@ public class Tetris implements Playable {
         this.difficulty = Difficulty.EASY;
         this.difficultyButtons();
         this.gamePane.setFocusTraversable(true);
+        this.timeline.setRate(1);
     }
     @Override
 

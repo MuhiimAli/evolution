@@ -47,7 +47,7 @@ public class Arcade {
         this.styleGameOVerLabel();
         this.buttonPane.setSpacing(Constants.BUTTON_PANE_SPACING);
         this.styleArcadeLabel();
-        this.setUpGames();
+        this.setUpArcadeGames();
         this.createQuitButton();
         this.stage.sizeToScene();
         this.isPaused=true;
@@ -124,7 +124,7 @@ public class Arcade {
      * this method loops through the enum values, creates a button for each game class
      * and calls the start method
      */
-    public void setUpGames() {//TODO maybe change the name of this method. can call it arcadeGames
+    public void setUpArcadeGames() {
         for (Game game : Game.values()) {
             Button button = new Button(game.getName());
             button.setOnAction((ActionEvent e) -> startGame(game));
@@ -148,15 +148,15 @@ public class Arcade {
      */
     public void startGame(Game game) {
         this.playable = game.createGame(this.timeline, this.root, this.gamePane, this.buttonPane);
+        this.createGameButtons();
         this.root.setCenter(this.gamePane);
+        this.gamePane.setOnKeyPressed((KeyEvent e) -> this.handlePause(e));
+        this.gamePane.setFocusTraversable(true);
+        this.stage.sizeToScene();
         KeyFrame keyframe = new KeyFrame(Duration.seconds(1), (ActionEvent e) -> this.updateGame());
         this.timeline.getKeyFrames().add(keyframe);
         this.timeline.setCycleCount(Animation.INDEFINITE);
         this.timeline.play();
-        this.createGameButtons();
-        this.gamePane.setOnKeyPressed((KeyEvent e) -> this.handlePause(e));
-        this.gamePane.setFocusTraversable(true);
-        this.stage.sizeToScene();
     }
 
     /**
@@ -213,25 +213,23 @@ public class Arcade {
 
         }
     }
-    private void back(){//TODO BUG: when you go from the manual bird to tetris: the timeline increases and the background image is stil there
+    private void back(){
+        this.timeline.stop();
         this.gamePane.getChildren().clear();
         this.buttonPane.getChildren().clear();
+        this.timeline.getKeyFrames().clear();
         this.root.getChildren().clear();
         this.root.setCenter(this.arcadePane);
         this.stage.sizeToScene();
-        this.timeline.stop();
 
     }
     /**]\tyuh
      * this method adds the gameOver label to the gamePane when the game is over
      */
-    private void gameOver(){
-        this.gameOver=this.playable.gameOver();
-        if(this.gameOver){
+    private void gameOver(){//todo need to stop all keyInputs when the game is over
+        if(this.playable.gameOver()){
             this.timeline.stop();
             this.gamePane.getChildren().add(this.gameOverLabel);
-            this.gameOver=false;//resetting the gameOver instance variable
-            this.gamePane.setOnKeyPressed(null);
 
         }
 

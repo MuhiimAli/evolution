@@ -6,5 +6,4 @@ public interface Flappable {
     Boolean gameOver();
     void handleKeyPress(KeyEvent e);
     void updateBirdVelocity();
-    void createBirds();
 }

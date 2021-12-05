@@ -119,11 +119,10 @@ public class ManualBird implements Flappable{
                 this.jump();
         }
     }
-    @Override
-    public void createBirds(){
-        this.gamePane.getChildren().addAll(this.body,this.eye,this.pupil,this.beak);
-
+    public double getYLoc(){
+       return this.body.getCenterY();
     }
+
 
 
 }

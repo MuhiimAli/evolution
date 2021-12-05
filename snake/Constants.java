@@ -14,6 +14,7 @@ public class Constants {
     public static final Color EVEN_SQUARE_COLOR = Color.GREENYELLOW;
     public static final int SCORE_PANE_HEIGHT = 60;
     public static final int GAME_PANE_HEIGHT = SQ_WIDTH * NUM_ROWS;
+    public static final int  GAME_PANE_WIDTH = SQ_WIDTH * NUM_COLS;
 
 
     public static final int FRUIT_RADIUS = 12;

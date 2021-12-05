@@ -12,7 +12,7 @@ public class MultiPlayerBird implements Flappable{
         this.pipeManager = pipeManager;
         this.gamePane = gamePane;
         this.createMultiPlayerBird();
-        this.multiPlayer[0].setYLoc(10);
+        this.multiPlayer[0].setYLoc(20);
     }
 
     /**
@@ -51,15 +51,19 @@ public class MultiPlayerBird implements Flappable{
 
     @Override
     public void handleKeyPress(KeyEvent e) {
-        KeyCode keyPressed = e.getCode();
-        switch (keyPressed) {
-            case SPACE:
-                this.multiPlayer[0].jump();
-                break;
-            case UP:
-            default:
-                this.multiPlayer[1].jump();
-                break;
+        for(int i=0;i< this.multiPlayer.length;i++) {
+            if (this.multiPlayer[i] != null) {
+                KeyCode keyPressed = e.getCode();
+                switch (keyPressed) {
+                    case SPACE:
+                        this.multiPlayer[0].jump();
+                        break;
+                    case UP:
+                    default:
+                        this.multiPlayer[1].jump();
+                        break;
+                }
+            }
         }
 
     }
@@ -75,11 +79,6 @@ public class MultiPlayerBird implements Flappable{
             }
 
         }
-    }
-    @Override
-    public void createBirds(){
-        this.createMultiPlayerBird();
-
     }
 
 }

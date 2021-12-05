@@ -11,5 +11,5 @@ public class Constants {
     public static final int SCROLL_RATE=4;
     public static final int GRAVITY = 1000; // acceleration constant (UNITS: pixels/s^2)
     public static final double REBOUND_VELOCITY = -400; // initial jump velocity (UNITS: pixels/s)
-    public static final double DURATION = 0.016;//TODO find a good duration
+    public static final double DURATION = 0.016;
 }

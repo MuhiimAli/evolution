@@ -5,8 +5,11 @@ import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 /**
  * Handles the high-level logic of the program, by running a timeline that updates
@@ -34,11 +37,15 @@ public class SnakeGame implements Playable {
         this.root=root;
         this.gamePane = gamePane;
         this.gamePane.setPrefHeight(Constants.GAME_PANE_HEIGHT);
+        this.gamePane.setPrefWidth(Constants.GAME_PANE_WIDTH);
         this.gamePane.setFocusTraversable(true);
         this.board = new Board(this.gamePane);
         this.snake = new Snake(this.board);
         this.scoreSnake = new Label(evolution.snake.Constants.SCORE_LABEL_TEXT + 0);
         this.root.setBottom(this.scoreSnake);
+        BackgroundFill fill = new BackgroundFill(Color.WHITE,null, null);
+        this.gamePane.setBackground(new Background(fill));
+        this.root.setBackground(new Background(fill));
         this.score = 0;
         this.gamePane.setOnKeyPressed((KeyEvent e) -> this.handleKeyPressed(e));
         this.timeline.setRate(1/ Constants.TIMELINE_DURATION);
