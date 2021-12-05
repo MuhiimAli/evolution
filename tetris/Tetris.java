@@ -51,6 +51,9 @@ public class Tetris implements Playable {
         this.buttonPane2.setSpacing(Constants.BUTTON_SPACING);
         this.board = new Board(gamePane);
         this.piece = new Piece(gamePane, Color.RED, Constants.I_PIECE_COORDS, this.board);
+        BackgroundFill fill = new BackgroundFill(Color.WHITE,null, null);
+        this.gamePane.setBackground(new Background(fill));
+        this.root.setBackground(new Background(fill));
         this.score = 0;
         this.highScore = 0;
         this.setUpScoreLabels();

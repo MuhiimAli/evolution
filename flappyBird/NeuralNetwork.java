@@ -33,8 +33,8 @@ public class NeuralNetwork {
 
 
     }
-//    public double forwardPropagation(inputNodes){
-//        double[][] hiddenLayer=this.dotProduct(this.weights.getSyn0(), this.smartBird.getInputArray())
+//    public double forwardPropagation(double[] inputNodes){
+//        double[][] hiddenLayer=this.dotProduct(this.weights.getSyn0(),inputNodes);
 //
 //    }
 
