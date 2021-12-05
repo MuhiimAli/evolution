@@ -10,12 +10,12 @@ public enum DifferentModes {
             case MANUAL:
                 flappyBird =new ManualBird(gamePane, pipeManager);
                 break;
-            case MULTIPLAYER: default:
+            case MULTIPLAYER:
                 flappyBird=new MultiPlayerBird(gamePane,pipeManager);
                 break;
-//            case SMART: default:
-//                flappyBird=new Population(gamePane,pipes);
-//                break;
+            case SMART: default:
+                flappyBird=new Population(gamePane,pipeManager);
+                break;
 
         }
         return flappyBird;

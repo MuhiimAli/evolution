@@ -101,6 +101,7 @@ public class ManualBird implements Flappable{
     @Override
     public Boolean gameOver(){
         if(this.checkIntersection(this.pipeManager.nearestPipe(), this.pipeManager.nearestPipe())){
+            this.removeFromPane();//this removes the bird graphically
             return true;
         }
         return false;

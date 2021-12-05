@@ -51,20 +51,17 @@ public class MultiPlayerBird implements Flappable{
 
     @Override
     public void handleKeyPress(KeyEvent e) {
-        for(int i=0;i<this.multiPlayer.length;i++) {
-            if (this.multiPlayer[i] != null) {
-                KeyCode keyPressed = e.getCode();
-                switch (keyPressed) {
-                    case SPACE:
-                        this.multiPlayer[0].jump();
-                        break;
-                    case UP:
-                    default:
-                        this.multiPlayer[1].jump();
-                        break;
-                }
-            }
+        KeyCode keyPressed = e.getCode();
+        switch (keyPressed) {
+            case SPACE:
+                this.multiPlayer[0].jump();
+                break;
+            case UP:
+            default:
+                this.multiPlayer[1].jump();
+                break;
         }
+
     }
 
     /**
