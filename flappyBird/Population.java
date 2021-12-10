@@ -109,7 +109,7 @@ public class Population implements Flappable{
                 groupTwo.mutateSyn1();
                 this.populationArraylist.add(groupTwo);
             }
-            else if(i%3==2){
+            else{
                 double[][] syn0=this.deadBirdsArraylist.get(49).copy(this.deadBirdsArraylist.get(49).getSyn0());
                 double[][] syn1= this.deadBirdsArraylist.get(49).copy(this.deadBirdsArraylist.get(49).getSyn1());
                 SmartBird groupThree=new SmartBird(this.gamePane, this.pipeManager, syn0, syn1);
@@ -128,7 +128,7 @@ public class Population implements Flappable{
     }
 
     @Override
-    public Boolean  gameOver(){
+    public Boolean  gameOver(){//todo bug
         if (this.populationArraylist.size() == 0) {
             System.out.println("empty");
             this.nextGeneration();
