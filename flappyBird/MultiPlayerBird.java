@@ -1,9 +1,7 @@
 package evolution.flappyBird;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-
 public class MultiPlayerBird implements Flappable{
     private Pane gamePane;
     private ManualBird[] multiPlayer;
@@ -12,7 +10,7 @@ public class MultiPlayerBird implements Flappable{
         this.pipeManager = pipeManager;
         this.gamePane = gamePane;
         this.createMultiPlayerBird();
-        this.multiPlayer[0].setYLoc(20);
+        this.multiPlayer[0].setYLoc(Constants.Y_LOC_BIRD2);
     }
 
     /**
@@ -43,28 +41,26 @@ public class MultiPlayerBird implements Flappable{
         }
             return false;
     }
-
     /**
      * this method make one of the birds jump with the spaceBar and the other one with the up arrow key
      * @param e
      */
-
     @Override
     public void handleKeyPress(KeyEvent e) {
-        for(int i=0;i< this.multiPlayer.length;i++) {
-            if (this.multiPlayer[i] != null) {
-                KeyCode keyPressed = e.getCode();
-                switch (keyPressed) {
-                    case SPACE:
+            KeyCode keyPressed = e.getCode();
+            switch (keyPressed) {
+                case SPACE:
+                    if(this.multiPlayer[0]!=null) {
                         this.multiPlayer[0].jump();
-                        break;
-                    case UP:
-                    default:
+                    }
+                    break;
+                case UP: default:
+                    if(this.multiPlayer[1]!=null) {
                         this.multiPlayer[1].jump();
-                        break;
-                }
+                    }
+                    break;
             }
-        }
+
 
     }
 
@@ -72,7 +68,7 @@ public class MultiPlayerBird implements Flappable{
      * this method updates the velocity of both birds. It makes them go down
      */
     @Override
-    public void updateBirdVelocity(){
+    public void updateWithTimeline(){
         for(int i=0;i< this.multiPlayer.length;i++){
             if(this.multiPlayer[i]!= null) {
                 this.multiPlayer[i].updateBirdVelocity();
@@ -80,5 +76,6 @@ public class MultiPlayerBird implements Flappable{
 
         }
     }
+
 
 }

@@ -27,8 +27,8 @@ public class FlappyBird implements Playable {
         this.gamePane = gamePane;
         this.scorePane = new VBox();
         this.timeline = timeline;
-        this.scorePane.setPrefWidth(30);
-        this.scorePane.setPrefHeight(40);
+        this.scorePane.setPrefWidth(Constants.SCORE_PANE_WIDTH);
+        this.scorePane.setPrefHeight(Constants.SCORE_PANE_HEIGHT);
         this.root.setBottom(this.scorePane);
         this.gamePane.setPrefHeight(Constants.GAME_PANE_HEIGHT);
         this.gamePane.setPrefWidth(Constants.GAME_PANE_WIDTH);
@@ -43,7 +43,7 @@ public class FlappyBird implements Playable {
         this.timeline.setRate(1 / Constants.DURATION);
         this.pipeManager =new PipeManager(this.gamePane);
         this.modes=birds;
-        this.bird=this.modes.createBird(this.gamePane,this.pipeManager);
+        this.bird=this.modes.createBird(this.gamePane,this.pipeManager, scorePane, this.timeline);
         this.isRunning=true;
     }
 
@@ -51,7 +51,7 @@ public class FlappyBird implements Playable {
      * this method sets up the background image
      */
     private void setUpBackground() {//TODO figure out how to make images scroll
-        Image image = new Image("./evolution/flappyBird/image.png", 900, 900, true, false);//this instantiates an image
+        Image image = new Image("./evolution/flappyBird/image.png", Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT, true, false);//this instantiates an image
         BackgroundImage background = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         this.gamePane.setBackground(new Background(background));//this sets the background of the gamePane for flappyBird
@@ -60,9 +60,9 @@ public class FlappyBird implements Playable {
 
     @Override
     public void updateGame() {
-        this.bird.updateBirdVelocity();
         this.pipeManager.scrollPipes();
         this.pipeManager.deletePipes();
+        this.bird.updateWithTimeline();//updates with the timeline
         this.setScoreLabel();
     }
 
@@ -73,15 +73,23 @@ public class FlappyBird implements Playable {
         this.gamePane.getChildren().clear();
         this.scoreLabel.setText("score: " + this.score);
         this.pipeManager=new PipeManager(this.gamePane);
-        this.pipeManager.scrollPipes();
-        this.pipeManager.deletePipes();
-        this.bird=this.modes.createBird(this.gamePane,this.pipeManager);//this creates birds
+        this.bird=this.modes.createBird(this.gamePane,this.pipeManager, scorePane, this.timeline);//this creates birds
         this.timeline.play();
     }
     @Override
     public boolean gameOver(){
-        if(this.bird.gameOver()){
-            return true;
+        if(this.modes!=DifferentModes.SMART){
+            if(this.bird.gameOver()){
+                return true;
+            }
+        }
+        else {
+            if (this.bird.gameOver()) {//todo running into the same issue
+                System.out.println("gameOver");
+                this.pipeManager.removeFromPane();
+                this.pipeManager.removeLogically();
+                this.pipeManager = new PipeManager(this.gamePane);
+            }
         }
         return false;
     }

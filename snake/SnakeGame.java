@@ -103,7 +103,7 @@ public class SnakeGame implements Playable {
     }
 
     @Override
-    public void reStart(){//TODO restart method bug: sometimes the food doesn't appear
+    public void reStart(){
         System.out.println(this.gameOver());
         this.timeline.pause();
         this.score = 0;

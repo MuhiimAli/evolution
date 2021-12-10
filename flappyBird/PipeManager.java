@@ -20,10 +20,10 @@ public class PipeManager {
      */
     public void generatePipes() {
         while (this.pipes.getXLoc() <= Constants.GAME_PANE_WIDTH) {
-            Pipe pipes = new Pipe(this.gamePane);
-            pipes.setXLoc(pipes.getXLoc()+Constants.PIPE_HORIZONTAL_DISTANCE);
-            this.pipeArraylist.add(pipes);
-            this.pipes = pipes;
+            Pipe newPipes = new Pipe(this.gamePane);
+            newPipes.setXLoc(this.pipes.getXLoc()+Constants.PIPE_HORIZONTAL_DISTANCE);
+            this.pipeArraylist.add(newPipes);
+            this.pipes = newPipes;
         }
     }
 
@@ -54,6 +54,18 @@ public class PipeManager {
      * @return the pipe that is closest to the bird
      */
     public Pipe nearestPipe(){
+       // System.out.println(this.pipeArraylist.size());
         return this.pipeArraylist.get(0);
     }
+    public void removeFromPane(){
+        for(int i=0;i<this.pipeArraylist.size(); i++){
+            this.pipeArraylist.get(i).removeFromPane();
+        }
+    }
+    public void removeLogically(){
+        for(int i=0;i<this.pipeArraylist.size(); i++){
+            this.pipeArraylist.remove(i);
+        }
+    }
+
 }

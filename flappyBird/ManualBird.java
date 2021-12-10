@@ -29,48 +29,53 @@ public class ManualBird implements Flappable{
      */
 
     private void createBird(){
-        int red = (int) (Math.random() * 256);
-        int green = (int) (Math.random() * 256);
-        int blue = (int) (Math.random() * 256);
+        int red = (int) (Math.random() * 256);//todo constants
+        int green = (int) (Math.random() * 256);//todo constants
+        int blue = (int) (Math.random() * 256);//todo constants
         Color customColor = Color.rgb(red, green, blue);
-        this.body=new Circle(100,200,10);
-        this.eye=new Circle(104,196,4);
-        this.pupil=new Circle(104,196,2);
+        this.body=new Circle(100,200,10);//todo constants
+        this.eye=new Circle(104,196,4);//todo constants
+        this.pupil=new Circle(104,196,2);//todo constants
         this.body.setFill(customColor);
         this.eye.setFill(Color.WHITE);
-        this.beak=new Polygon(110,198,115,203,107,208);
+        this.beak=new Polygon(110,198,115,203,107,208);//todo constants
         this.gamePane.getChildren().addAll(this.body,this.eye,this.pupil,this.beak);
     }
 
-    @Override
+
     public void updateBirdVelocity(){
         this.velocity = this.velocity + Constants.GRAVITY * Constants.DURATION;
         this.position = this.position + this.velocity * Constants.DURATION;
         this.setYLoc(this.position);
 
     }
+    @Override
+    public void updateWithTimeline(){
+        this.updateBirdVelocity();
+    }
 
     /**
      * this method changes the velocity of the bird negative(makes it go up)
      */
     public void jump(){
-        if(this.body.getCenterY()>=60){
+        if(this.body.getCenterY()>60){
             this.velocity=Constants.REBOUND_VELOCITY;
+            this.updateBirdVelocity();
         }
-
+//
     }
     public void setXLoc(double x){
         this.beak.setLayoutX(x);
-        this.body.setCenterX(x+100);
-        this.eye.setCenterX(x+104);
-        this.pupil.setCenterX(x+104);
+        this.body.setCenterX(x+100);//todo constants
+        this.eye.setCenterX(x+104);//todo constants
+        this.pupil.setCenterX(x+104);//todo constants
 
     }
     public void setYLoc(double y){
         this.beak.setLayoutY(y);
-        this.body.setCenterY(y+200);
-        this.pupil.setCenterY(y+196);
-        this.eye.setCenterY(y+196);
+        this.body.setCenterY(y+200);//todo constants
+        this.pupil.setCenterY(y+196);//todo constants
+        this.eye.setCenterY(y+196);//todo constants
         this.position=y;
 
     }
@@ -90,7 +95,7 @@ public class ManualBird implements Flappable{
      */
     public Boolean checkIntersection(Pipe top, Pipe bottom){
         if(this.body.intersects(top.getBoundsTopPipe())
-                || this.body.getCenterY()>=Constants.GAME_PANE_HEIGHT
+                || this.body.getCenterY()>Constants.GAME_PANE_HEIGHT
         ||this.body.intersects(bottom.getBoundsBottomPipe()) ){
             return true;
         }

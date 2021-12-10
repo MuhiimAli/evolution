@@ -57,17 +57,17 @@ public class Board {
      * this method clear lines when the row is full
      */
     public void clearLine() {
-        for (int row = 1; row < Constants.NUM_ROWS - 1; row++) {
-            if (this.checkIfFull(row)) {
-                    for (int col = 1; col < Constants.NUM_COLS - 1; col++) {
-                        this.board[row][col].removeFromPane();
+        for (int row = 1; row < Constants.NUM_ROWS - 1; row++) {//for each row from top to bottom
+            if (this.checkIfFull(row)) {//if the row is full
+                    for (int col = 1; col < Constants.NUM_COLS - 1; col++) {//loops through all the columns of the full row
+                        this.board[row][col].removeFromPane();//remove that row graphically
                     }
-                    for (int i = row; i > 1; i--) {
-                        for (int j = 1; j < Constants.NUM_COLS - 1; j++) {
-                            if (this.board[i][j] != null) {
-                                this.board[i][j].setYLoc(this.board[i][j].getYLoc() + Constants.SQUARE_SIZE);
+                    for (int i = row; i > 1; i--) {//for each row from cleared row to top of board.
+                        for (int j = 1; j < Constants.NUM_COLS - 1; j++) {//for each column
+                            if (this.board[i][j] != null) {//if the row isn't full
+                                this.board[i][j].setYLoc(this.board[i][j].getYLoc() + Constants.SQUARE_SIZE);//moves the square above down graphically
                             }
-                            this.board[i][j] = this.board[i- 1][j];
+                            this.board[i][j] = this.board[i- 1][j];//moves the square down logically
                         }
                   }
             }

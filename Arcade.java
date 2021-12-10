@@ -175,8 +175,6 @@ public class Arcade {
         this.buttonPane.setPrefHeight(Constants.BUTTON_PANE_HEIGHT);
         this.root.setTop(this.buttonPane);//puts the buttonPane on top
         this.buttonPane.setAlignment(Pos.CENTER);
-
-
     }
 
     /**
@@ -205,12 +203,13 @@ public class Arcade {
      * @param e
      */
     private void handlePause(KeyEvent e) {
+        if(!this.gameOver) {
             KeyCode keyPressed = e.getCode();
             if (keyPressed == KeyCode.P) {
                 this.pause();
-        } else if(this.isPaused) {
-            this.playable.handleKeyPressed(e);
-
+            } else if (this.isPaused) {
+                this.playable.handleKeyPressed(e);
+            }
         }
     }
     private void back(){
@@ -221,23 +220,20 @@ public class Arcade {
         this.root.getChildren().clear();
         this.root.setCenter(this.arcadePane);
         this.stage.sizeToScene();
-
     }
     /**]\tyuh
      * this method adds the gameOver label to the gamePane when the game is over
      */
-    private void gameOver(){//todo need to stop all keyInputs when the game is over
-        if(this.playable.gameOver()){
+    private void gameOver(){
+        this.gameOver=this.playable.gameOver();
+        if(this.gameOver){
             this.timeline.stop();
             this.gamePane.getChildren().add(this.gameOverLabel);
-
         }
-
     }
     private void updateGame(){
         this.gameOver();
         this.playable.updateGame();
-
     }
 
 

@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
 
 
 public enum Game {
-    SMART("SMART BIRD"),MULTIPLAYER("MULTIPLAYER"), MANUAL("MANUAL FLAPPY BIRD"),SNAKE("SNAKE"),TETRIS("TETRIS");//todo switch the order of the birds
+    SMART("SMART BIRD"),MULTIPLAYER("MULTIPLAYER"), MANUAL("MANUAL FLAPPY BIRD"),SNAKE("SNAKE"),TETRIS("TETRIS");
     private String name;
     public Playable createGame(Timeline timeline, BorderPane root, Pane gamePane, HBox buttonPane) {
         Playable playable;

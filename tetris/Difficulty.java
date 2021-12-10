@@ -4,7 +4,7 @@ package evolution.tetris;
  * This is the enum class, it represents the results of the easy, medium and hard buttons being clicked.
  */
 public enum Difficulty {
-    EASY, MEDIUM, HARD;
+    EASY, MEDIUM, HARD;//these are the enum constants
 
     public double setDifficulty() {
         switch (this) {
