@@ -13,18 +13,22 @@ public class PipeManager {
         this.pipeArraylist = new ArrayList<>();
         this.pipes = new Pipe(this.gamePane);
         this.pipeArraylist.add(this.pipes);
+
     }
 
     /**
      * this method generates pipes
      */
-    public void generatePipes() {
+    public Pipe generatePipes() {
+        Pipe newPipes=null;
         while (this.pipes.getXLoc() <= Constants.GAME_PANE_WIDTH) {
-            Pipe newPipes = new Pipe(this.gamePane);
+            newPipes = new Pipe(this.gamePane);
             newPipes.setXLoc(this.pipes.getXLoc()+Constants.PIPE_HORIZONTAL_DISTANCE);
             this.pipeArraylist.add(newPipes);
             this.pipes = newPipes;
         }
+        return newPipes;
+
     }
 
     /**
@@ -43,9 +47,11 @@ public class PipeManager {
      * this method deletes the pipes when they're done scrolling, when they're off the screen
      */
     public void deletePipes(){
-        if (this.pipeArraylist.get(0).getXLoc() <=-Constants.PIPE_WIDTH){
-            this.pipeArraylist.get(0).removeFromPane();
-            this.pipeArraylist.remove(0);
+        for(int i=0;i<this.pipeArraylist.size();i++){
+            if (this.pipeArraylist.get(i).getXLoc() <=-Constants.PIPE_WIDTH){
+                this.pipeArraylist.get(i).removeFromPane();
+                this.pipeArraylist.remove(i);
+            }
         }
     }
 
@@ -54,8 +60,8 @@ public class PipeManager {
      * @return the pipe that is closest to the bird
      */
     public Pipe nearestPipe(){
-       // System.out.println(this.pipeArraylist.size());
         return this.pipeArraylist.get(0);
+
     }
     public void removeFromPane(){
         for(int i=0;i<this.pipeArraylist.size(); i++){
@@ -66,6 +72,9 @@ public class PipeManager {
         for(int i=0;i<this.pipeArraylist.size(); i++){
             this.pipeArraylist.remove(i);
         }
+        this.pipeArraylist = new ArrayList<>();
+        this.pipes = new Pipe(this.gamePane);
+        this.pipeArraylist.add(this.pipes);
     }
 
 }

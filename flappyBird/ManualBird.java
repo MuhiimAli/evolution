@@ -22,6 +22,7 @@ public class ManualBird implements Flappable{
         this.createBird();
         this.setXLoc(0);
         this.setYLoc(0);
+        this.setOpacity();
     }
 
     /**
@@ -40,6 +41,13 @@ public class ManualBird implements Flappable{
         this.eye.setFill(Color.WHITE);
         this.beak=new Polygon(110,198,115,203,107,208);//todo constants
         this.gamePane.getChildren().addAll(this.body,this.eye,this.pupil,this.beak);
+    }
+    public void setOpacity(){
+        this.body.setOpacity(0.5);
+        this.beak.setOpacity(1);
+        this.eye.setOpacity(1);
+        this.pupil.setOpacity(1);
+
     }
 
 

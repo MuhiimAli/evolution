@@ -74,24 +74,16 @@ public class FlappyBird implements Playable {
         this.scoreLabel.setText("score: " + this.score);
         this.pipeManager=new PipeManager(this.gamePane);
         this.bird=this.modes.createBird(this.gamePane,this.pipeManager, scorePane, this.timeline);//this creates birds
+
         this.timeline.play();
     }
     @Override
     public boolean gameOver(){
-        if(this.modes!=DifferentModes.SMART){
-            if(this.bird.gameOver()){
-                return true;
-            }
+        if(this.bird.gameOver()){
+            return true;
         }
-        else {
-            if (this.bird.gameOver()) {//todo running into the same issue
-                System.out.println("gameOver");
-                this.pipeManager.removeFromPane();
-                this.pipeManager.removeLogically();
-                this.pipeManager = new PipeManager(this.gamePane);
-            }
-        }
-        return false;
+
+    return false;
     }
     @Override
     public void handleKeyPressed(KeyEvent e) {

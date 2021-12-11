@@ -3,16 +3,16 @@ package evolution.flappyBird;
 public enum SpeedLevels {
     SPEED1, SPEED2, SPEED3, SPEED_MAx;
 
-    public double setSpeed(double x) {
+    public double setSpeed() {
         switch (this) {
             case SPEED1:
-                 return x*2.5;
+                 return 1/Constants.DURATION;
             case SPEED2:
-                return  x*3.5;
+                return 2/Constants.DURATION;
             case SPEED3:
-               return 4.5;
+               return 3/Constants.DURATION;
             case SPEED_MAx: default:
-                return 5.5;
+                return 5/Constants.DURATION;
         }
 
     }

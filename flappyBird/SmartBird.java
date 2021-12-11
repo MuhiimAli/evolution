@@ -22,7 +22,15 @@ public class SmartBird{
 
 
     }
-    public SmartBird(Pane gamePane, PipeManager pipeManager, double[][] syn0, double[][]syn1){//todo am not really passing down the weights
+
+    /**
+     * @param gamePane
+     * @param pipeManager
+     * @param syn0
+     * @param syn1
+     * this method takes in syn0 and syn1 because we want to pass down the weights of the "elite birds" to the next generation
+     */
+    public SmartBird(Pane gamePane, PipeManager pipeManager, double[][] syn0, double[][]syn1){
         this.syn0 = syn0;
         this.syn1 =syn1;
         this.brain=new NeuralNetwork(syn0, syn1);
@@ -40,27 +48,32 @@ public class SmartBird{
                 this.smartBird.updateBirdVelocity();
         }
     }
+
+    /**
+     * this method initializes the input array and creates its values
+     * @return
+     */
     private double[][] createInputNodes() {
         this.inputArray = new double[Constants.INPUT_ROW][Constants.INPUT_COL];//this instantiates the input array
         double birdYLocation = this.smartBird.getYLoc();
-        double nearestPipeXLoc = this.pipeManager.nearestPipe().getXLoc();
+        double nearestPipeXLoc = this.pipeManager.nearestPipe().getXLoc();//the x location of the nearest pipe
         double topPipeHeight=this.pipeManager.nearestPipe().getTopPipeHeight();
         double bottomPipeHeight=this.pipeManager.nearestPipe().getBottomPipeHeight();
-        inputArray[0][0] = birdYLocation / Constants.GAME_PANE_HEIGHT;//todo figure out why this value is negative
-        inputArray[1][0] = nearestPipeXLoc / Constants.GAME_PANE_WIDTH;
+        inputArray[0][0] = birdYLocation / Constants.GAME_PANE_HEIGHT;//y location of the bird
+        inputArray[1][0] = nearestPipeXLoc / Constants.GAME_PANE_WIDTH;//x location of the nearest pipe
         inputArray[2][0] = bottomPipeHeight/Constants.GAME_PANE_HEIGHT;//height of the bottom pipe
         inputArray[3][0] = topPipeHeight/Constants.GAME_PANE_HEIGHT;//the height of the top pipe
         return inputArray;
 
     }
-    public double getYLoc(){
-        return this.smartBird.getYLoc();
-
-    }
-    public void setYLoc(double y){
-        this.smartBird.setYLoc(y);
-
-    }
+//    public double getYLoc(){
+//        return this.smartBird.getYLoc();
+//
+//    }
+//    public void setYLoc(double y){
+//        this.smartBird.setYLoc(y);
+//
+//    }
     public boolean checkIntersection(){
         if(this.smartBird.checkIntersection(pipeManager.nearestPipe(),pipeManager.nearestPipe())){
             this.smartBird.removeFromPane();
@@ -69,15 +82,35 @@ public class SmartBird{
         }
         return false;
     }
+
+    /**
+     * this method removes the smart bird graphically
+     */
     public void removeFromPane(){
         this.smartBird.removeFromPane();
     }
+
+    /**
+     * a getter method that returns syn0
+     * @return
+     */
     public double[][] getSyn0(){
         return this.syn0;
     }
+
+    /**
+     * a getter method that returns syn1
+     * @return
+     */
     public  double[][] getSyn1(){
         return this.syn1;
     }
+
+    /**
+     * the method makes a copy of a 2D array
+     * @param copyArray
+     * @return
+     */
     public double[][] copy(double[][] copyArray){
         double[][] newMatrix= new double[copyArray.length][copyArray[0].length];
         for(int i=0; i<copyArray.length; i++){
@@ -87,6 +120,10 @@ public class SmartBird{
         }
         return newMatrix;
     }
+
+    /**
+     * this method assigns syn0 to random values between -1 and 1
+     */
     private void setSyn0() {
         for (int row = 0;row < this.syn0.length; row++) {
             for (int col = 0; col < this.syn0[0].length; col++) {
@@ -94,6 +131,10 @@ public class SmartBird{
             }
         }
     }
+
+    /**
+     * this method fills the elements of syn1 with random values between -1 and 1
+     */
     private void setSyn1() {
         for (int row = 0; row < this.syn1.length; row++) {
             for (int col = 0; col < this.syn1[0].length; col++) {
@@ -102,14 +143,22 @@ public class SmartBird{
         }
 
     }
+
+    /**
+     * this method mutates the values of syn0 that are less than the mutation rate
+     */
     public void mutateSynO(){
         for(int i=0;i<this.syn0.length; i++ ){
             for(int j=0;j<this.syn0[0].length;j++)
-            if(Math.random()<Constants.MUTATION_RATE){
-                this.syn0[i][j]=Math.random()*2-1;
+            if(Math.random()<Constants.MUTATION_RATE){//checks if math.random() is less than the mutation rate
+                this.syn0[i][j]=Math.random()*2-1;//mutates the weight
             }
         }
     }
+
+    /**
+     * this method mutates the values of syn1 that are less than the mutation rate
+     */
     public void mutateSyn1(){
         for(int i=0;i<this.syn1.length; i++ ){
             for(int j=0;j<this.syn1[0].length;j++)
