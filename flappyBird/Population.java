@@ -33,8 +33,8 @@ public class Population implements Flappable{
     private Label generation;
     private Label avgFitness;
     private Timeline timeline;
-   // private int[] AvgFitness;
-    private int sum;
+    private int avgFitnessLastGen;
+   private int sum;
 
     /**
      * I associated this gamePane, PipeManager class, scorePane and the timeline with this class
@@ -51,13 +51,13 @@ public class Population implements Flappable{
         this.bestFitnessLastGen=0;
         this.bestFitnessAllTimes=0;
         this.sum=0;
+        this.avgFitnessLastGen=0;
         this.gamePane=gamePane;
         this.pipeManager=pipeManager;
         this.timeline=timeline;
         this.scorePane.getChildren().clear();
         this.populationArraylist = new ArrayList<>();//initializing an arraylist
         this.deadBirdsArraylist = new ArrayList<>();
-      //  this.AvgFitness=new int[50];
         this.labelPane=new VBox();//initializing a VBox
         this.speedPane=new HBox();
         this.alive=new Label();//initializing a label
@@ -67,7 +67,7 @@ public class Population implements Flappable{
         this.generation=new Label();
         this.avgFitness=new Label();
         this.scorePane.getChildren().addAll(speedPane, labelPane);//adding the HBox and VBox to the pane
-        labelPane.getChildren().addAll(this.alive, this.bestFitness, this.bestFitnessAllTime, this.avgFitness, this.generation, this.currentFitness);//adding all the stats label to the pane
+        labelPane.getChildren().addAll(this.alive, this.avgFitness, this.bestFitness, this.bestFitnessAllTime, this.generation, this.currentFitness);//adding all the stats label to the pane
         speedPane.setAlignment(Pos.TOP_RIGHT);
         this.createSmartBirds();
         this.statsBar();
@@ -125,7 +125,7 @@ public class Population implements Flappable{
      * this method keeps track of the birds' fitness
      * the bird's fitness increases by 1 at each iteration of the timeline
      */
-    public void fitness(){//update this with the timeline
+    public void fitness(){
         this.fitness++;
     }
 
@@ -134,6 +134,8 @@ public class Population implements Flappable{
      */
     public void createNextGeneration() {
         if (this.populationArraylist.size() == 0){//checks if the arraylist is empty
+            this.avgFitnessLastGen=this.sum/50;
+            this.sum=0;
             if (this.fitness >Constants.GEN0_PASS) {//400 is how long it takes a bird to get to the second pipe
                 this.fitness = 0;
                 this.pipeManager.removeFromPane();//removes the pipes graphically
@@ -146,6 +148,7 @@ public class Population implements Flappable{
                 birds from gen 0 didn't go through at least one pipe
                 and creates a new generation with random weights
                  */
+                this.fitness=0;
                 this.populationArraylist.clear();
                 this.deadBirdsArraylist.clear();
                 this.pipeManager.removeFromPane();//removes the pipes graphically
@@ -158,10 +161,12 @@ public class Population implements Flappable{
     }
 
     /**
-     * this method gets rid of the optimal birds
+     * this method gets rid of the optimal birds so that they don't keep going forever
      */
-    public void killGeniusBird(){
-        if(this.fitness>=10000){
+    public void killSwitch(){
+        if(this.fitness>=Constants.KILL_SWITCH){
+            this.sum+=this.fitness;
+            System.out.println(this.sum);
             for(int i=0;i<this.populationArraylist.size(); i++){
                 SmartBird deadBirds = this.populationArraylist.get(i);
                 this.deadBirdsArraylist.add(deadBirds);
@@ -220,22 +225,20 @@ public class Population implements Flappable{
         }
         this.createNextGeneration();
         this.collisionDetection();
-        this.killGeniusBird();
+        this.killSwitch();
     }
 
     /**
-     * this method creates the speed buttons.
+     * this method creates four buttons to update the rate of the timeline
      */
     private void statsBar() {
-        for(SpeedLevels speedLevels: SpeedLevels.values()) {
-            Button button1 = new Button(speedLevels.getName());
-            button1.setOnAction((ActionEvent e) -> this.switchSpeedLevels(speedLevels));
+        for(SpeedLevels speedLevels: SpeedLevels.values()) {//loops through the values of the enum
+            Button button1 = new Button(speedLevels.getName());//creates a button at each iteration
+            button1.setOnAction((ActionEvent e) -> this.switchSpeedLevels(speedLevels));//
             button1.setFocusTraversable(false);
-            speedPane.getChildren().addAll(button1);
+            speedPane.getChildren().addAll(button1);//adds the buttons to the speedPane
         }
-
     }
-
     /**
      * changes the rate of the timeline
      * @param speedLevels takes an enum
@@ -252,8 +255,8 @@ public class Population implements Flappable{
         this.bestFitness.setText("Best Fitness Last Gen: " + bestFitnessLastGen );
         this.bestFitnessAllTimes=Math.max(this.bestFitnessAllTimes, this.bestFitnessLastGen);
         this.bestFitnessAllTime.setText("Best Fitness All Time: "+ this.bestFitnessAllTimes);
-        this.avgFitness.setText("AvgFitness: ");
         this.generation.setText("Gen: "+ this.gens);
+        this.avgFitness.setText("Avg Fitness LastGen: "+ this.avgFitnessLastGen);
         this.currentFitness.setText("Current Fitness:" + fitness);
     }
 

@@ -9,7 +9,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 /**
- * this is the top-level logic class.
+ * this is the top-level logic class for the different birds. The gameOVer and the different handleKeyPresses
+ * of the birds are called here
  */
 
 public class FlappyBird implements Playable {

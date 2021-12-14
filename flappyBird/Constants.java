@@ -76,7 +76,8 @@ public class Constants {
     public static final int COLOR_PALETTE=256;
     public static final int JUMP_THRESHOLD=100;
     public static final double Y_LOC_BIRD2=20;
-    public static final double GEN0_PASS=400;
+    public static final double GEN0_PASS=150;
+    public static final double KILL_SWITCH=10000;
 
 
 

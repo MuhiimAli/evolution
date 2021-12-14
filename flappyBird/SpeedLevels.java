@@ -1,7 +1,7 @@
 package evolution.flappyBird;
 
 public enum SpeedLevels {
-    SPEED1("1x"), SPEED2("2x"), SPEED3("3x"), SPEED_MAx("Max");
+    SPEED1("1x"), SPEED2("2x"), SPEED5("5x"), MAx("Max");
     private String name;
 
     public double setSpeed() {
@@ -10,16 +10,20 @@ public enum SpeedLevels {
                  return 1/Constants.DURATION;
             case SPEED2:
                 return 2/Constants.DURATION;
-            case SPEED3:
-               return 3/Constants.DURATION;
-            case SPEED_MAx: default:
-                return 7/Constants.DURATION;
+            case SPEED5:
+               return 5/Constants.DURATION;
+            case MAx: default:
+                return 25/Constants.DURATION;
         }
 
     }
     SpeedLevels(String name){
         this.name=name;
     }
+
+    /**
+     * @return returns the enum constant
+     */
     public String getName(){
         return this.name;
     }
