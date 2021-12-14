@@ -1,7 +1,11 @@
 package evolution.flappyBird;
-
 import javafx.scene.layout.Pane;
-
+/**
+ * this is our smart bird class,
+ * it initializes the neural network class
+ * it creates the input array and the weights
+ * and takes care of everything a smart bird should have and know about
+ */
 public class SmartBird{
     private Pane gamePane;
     private ManualBird smartBird;
@@ -12,12 +16,12 @@ public class SmartBird{
     private double[][] syn1;
 
     /**
-     * this is our smart bird class,
-     * it initializes the neural network class
-     * it creates the input array and the weights
-     * and takes care of everything a smart bird should have/know about
+     * the weights are initialized in the constructor
+     * an instance of the neural network is created
+     * an instance of the manualBird class is created in the constructor
+     * @param gamePane
+     * @param pipeManager
      */
-
     public SmartBird(Pane gamePane, PipeManager pipeManager){
         this.syn0 = new double[Constants.SYN0_ROW][Constants.SYN0_COL];//syn0= new double[hiddenNodes=3][inputNodes=4]/
         this.syn1 = new double[Constants.SYN1_ROW][Constants.SYN1_COL];//syn1=new double[outputNodes=1][hiddenNodes=3]

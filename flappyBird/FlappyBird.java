@@ -1,5 +1,4 @@
 package evolution.flappyBird;
-
 import evolution.Playable;
 import javafx.animation.Timeline;
 import javafx.scene.control.Label;

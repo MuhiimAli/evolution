@@ -34,8 +34,7 @@ public class Population implements Flappable{
     private Label avgFitness;
     private Timeline timeline;
     private int avgFitnessLastGen;
-   private int sum;
-
+    private int sum;
     /**
      * I associated this gamePane, PipeManager class, scorePane and the timeline with this class
      * the constructor instantiates multiple labels for the stats bar
@@ -166,7 +165,6 @@ public class Population implements Flappable{
     public void killSwitch(){
         if(this.fitness>=Constants.KILL_SWITCH){
             this.sum+=this.fitness;
-            System.out.println(this.sum);
             for(int i=0;i<this.populationArraylist.size(); i++){
                 SmartBird deadBirds = this.populationArraylist.get(i);
                 this.deadBirdsArraylist.add(deadBirds);

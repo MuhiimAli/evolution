@@ -6,42 +6,40 @@ The classes in the evolution package interact in the following:
 -The app class
     contains instance of the arcade class. It adds the root to the scene and sets the stage
 -The Arcade class:
-    -it is the top-level graphic class for all the game classes. It organizes the panes graphically
+    -the top-level graphic class for all the game classes. It organizes the panes graphically
     -this is where the shared gamePane, timeline, and buttonPane are created
 -The FlappyBird class:
-    -it is the top-level logic class for the different flappy bird modes
+    -the top-level logic class for the different flappy bird modes
     it creates the handleKeypress, gameOver and restart methods, which are then called in the arcade class,
     -it tracks the bird's score, which increases by 1 for each pipe the bird passes through
-    -The differentMode enum is instantiated here so the game doesn't know about which flappyBird mode is currently playing
+    -The differentMode enum is instantiated here so the game doesn't know about which flappyBird mode it is currently in
 -The ManualBird class:
-    -this is a wrapper classes the wraps around multiple javafx shapes
-    it creates the composite shape of the bird
-    To enhance loose coupling in the program, all the methods associated with the movement and velocity of the bird are
+    -this is a wrapper class the wraps around two javafx shapes-Circle and Polygon
+    -it creates the composite shape of the bird
+    -To enhance loose coupling in the program, all the methods associated with the movement and velocity of the bird are
     implemented here
 -The multiplayerBird class:
-    this class creates two instance of the manualBird class, because it needs to have
+    -creates two instance of the manualBird class because it needs to operate just like the regular flappyBird
+-The smartBird class:'
+    -contains one instance of then manualBird class.
+    -Contains an instance of the neural network because we want each smart bird to have its own neural network
+    -Calls the forward propagation and makes the smart bird jump or not jump based on the outcome of the output node
+-The population class:
+    -contains instance of the smart Bird class
+    first creates 50 smart birds with random weights and for each subsequent generation, the weights of the 3 best performing
+    birds are passed down to the next generation. The weights of the children are then mutates so that they learn over time
 -The Pipe class:
     this is a wrapper class that contains a javafx class-rectangle
     in this class, two rectangles are created--the top and bottom pipes.
-
-
-
+-The pipeManager:
+    Contains instance of the pipe class
+    handles the generating, scrolling and the deleting of the pipes
 -The Constants class:
-To make the program  more understandable, we created a constants class that contains all the constants used in the program.
-This reduces repetition of numbers in the program and also improves the general design of the program.
-
-
-
-
-
-
-
-
-
-
+   - To make the program  more understandable, we created a constants class that contains all the constants used in the program.
+    This reduces repetition of numbers in the program and also improves the general design of the program.
 
 Design choices:
-Interface:
+2 interfaces: Playable and Flappable
     All the game classes implement the playable interface, which declares the restart, gameOver, updateGame, and handleKeyPress method.
     I used an interface because all the game classes have those methods listed above but they define it differently.
     The bird classes(Manual, Multiplayer, smart) also implement an interface called flappable, which declares the gameOVer, updateWithTimeline
@@ -51,6 +49,7 @@ Containment:
  -The App class contains the arcade class
  -The smartBird and multiplayerBird classes contain the ManualBird class
  -The smartBird class contains the NeuralNetwork class
+ -The population class contains an instance of the smartBird class
  -The pipeManager class contains the pipe class
 Association:
 -I associated the gamePane with all the game classes and all the different flappy bird modes
@@ -59,31 +58,30 @@ Association:
 to check for collision.
 -I associated the scorePane with the population class to add the stats of the smart birds
 
-
-
-
-
-
-
 Enums:
-    I used enums in multiple places t
+   I created three different enums to delegate the work more and make the program more extensible
 -SpeedLevel Enum:
+    it sets the speed of the timeline based on the enum value
 -Game Enum:
     In this enum, I instantiated the different game classes in enum to make it extensible to add other arcade games.
     This creates a level of abstraction because the arcade class doesn't need to know about which game is currently playing
--Different Modes:
-    I instantiate the
-
-
-
-
+-DifferentModes:
+    I instantiated the different flappy bird modes in this enum
+    this creates a level of abstraction so that the game class doesn't know about which mode it is in while the game progresses
 
 Constructor Overloading:
--I used constructor overloading because sometimes I wanted to create birds with random weights and other times
-I wanted to initialize the birds with the neural network of a parent.
-
-
+    -I used constructor overloading because sometimes I wanted to create birds with random weights and other times
+    I wanted to initialize the birds with the neural network of a parent.
 Bells and whistles:
--Some fun colors on the birds
--styled the arcade home screen
--
+    -Some fun colors on the birds
+    -styled the arcade home screen
+
+Known bugs:
+
+Debugging Collaborators:
+
+
+How long it took me to complete this project:
+
+
+

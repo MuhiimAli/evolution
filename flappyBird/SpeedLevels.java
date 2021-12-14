@@ -1,6 +1,9 @@
 package evolution.flappyBird;
 
 public enum SpeedLevels {
+    /**
+     * it sets the speed of the timeline based on the enum value
+     */
     SPEED1("1x"), SPEED2("2x"), SPEED5("5x"), MAx("Max");
     private String name;
 
