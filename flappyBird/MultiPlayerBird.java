@@ -2,10 +2,21 @@ package evolution.flappyBird;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+/**
+ * this is the “multiplayer” Flappy Bird, which operates just like regular Flappy Bird
+ * but with two birds: one that reacts to the spaceBar and one that reacts to the up arrow key.
+ */
 public class MultiPlayerBird implements Flappable{
     private Pane gamePane;
     private ManualBird[] multiPlayer;
     private PipeManager pipeManager;
+
+    /**
+     * the gamePane and the PipeManager class are associated with this class
+     * the constructor calls the createMultiPlayerBird();
+     * @param gamePane
+     * @param pipeManager
+     */
     public MultiPlayerBird(Pane gamePane, PipeManager pipeManager) {
         this.pipeManager = pipeManager;
         this.gamePane = gamePane;
@@ -60,8 +71,6 @@ public class MultiPlayerBird implements Flappable{
                     }
                     break;
             }
-
-
     }
 
     /**

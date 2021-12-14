@@ -1,5 +1,4 @@
 package evolution;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,8 +17,12 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-
+/**
+ * this is top-level graphic class for all the game classes
+ * this class creates a home screen from which the user
+ * can choose from manual Flappy Bird, multiplayer Flappy Bird, smart Flappy Bird, Tetris and snake
+ * It creates the timeline and paused method that all the game classes share
+ */
 public class Arcade {
     private BorderPane root;
     public HBox buttonPane;
@@ -34,6 +37,12 @@ public class Arcade {
    private Label gameOverLabel;
    private Boolean gameOver;
 
+    /**
+     * the stage is associated with the class.
+     * the constructor method creates the root, gamePane, buttonPane, arcadePane and the timeline
+     *
+     * @param stage
+     */
 
     public Arcade(Stage stage) {
         this.stage=stage;
@@ -50,7 +59,7 @@ public class Arcade {
         this.setUpArcadeGames();
         this.createQuitButton();
         this.stage.sizeToScene();
-        this.isPaused=true;
+        this.isPaused=false;
         this.paused=new Label("PAUSED");
         this.gameOver=true;
     }
@@ -186,15 +195,15 @@ public class Arcade {
         this.paused.setLayoutX(evolution.tetris.Constants.LAYOUT_X * evolution.tetris.Constants.SQUARE_SIZE);
         this.paused.setLayoutY(evolution.tetris.Constants.LAYOUT_Y * evolution.tetris.Constants.SQUARE_SIZE);
         this.paused.setTextFill(Color.RED);
-        if (this.isPaused) {
-            this.timeline.pause();
+        if (!this.isPaused) {//if the game isn't paused
+            this.timeline.pause();//pauses the timeline
             this.gamePane.getChildren().add(paused);
-            this.isPaused = false;
+            this.isPaused = true;
         } else {
             this.timeline.play();
             this.gamePane.getChildren().remove(paused);
             this.gamePane.setFocusTraversable(true);
-            this.isPaused = true;
+            this.isPaused = false;
         }
     }
 
@@ -203,15 +212,25 @@ public class Arcade {
      * @param e
      */
     private void handlePause(KeyEvent e) {
+        /*
+        this calls the pause method is game isn't over
+         */
         if(!this.gameOver) {
             KeyCode keyPressed = e.getCode();
             if (keyPressed == KeyCode.P) {
                 this.pause();
-            } else if (this.isPaused) {
+            } else if (!this.isPaused) {
+                /*
+                this calls the handleKeypress if the game isn't paused.
+                 */
                 this.playable.handleKeyPressed(e);
             }
         }
     }
+
+    /**
+     *this method takes you back to the arcade's home screen
+     */
     private void back(){
         this.timeline.stop();
         this.gamePane.getChildren().clear();
@@ -221,8 +240,8 @@ public class Arcade {
         this.root.setCenter(this.arcadePane);
         this.stage.sizeToScene();
     }
-    /**]\tyuh
-     * this method adds the gameOver label to the gamePane when the game is over
+    /**]
+     * this method stops the timeline and adds the gameOver label to the gamePane when the game is over
      */
     private void gameOver(){
         this.gameOver=this.playable.gameOver();
@@ -231,6 +250,10 @@ public class Arcade {
             this.gamePane.getChildren().add(this.gameOverLabel);
         }
     }
+
+    /**
+     * this method gets updated with the timeline
+     */
     private void updateGame(){
         this.gameOver();
         this.playable.updateGame();

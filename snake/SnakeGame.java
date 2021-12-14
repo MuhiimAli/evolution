@@ -104,7 +104,6 @@ public class SnakeGame implements Playable {
 
     @Override
     public void reStart(){
-        System.out.println(this.gameOver());
         this.timeline.pause();
         this.score = 0;
         this.gamePane.getChildren().clear();

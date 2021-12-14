@@ -4,15 +4,22 @@ public class NeuralNetwork {
     private double[][] syn0;
     private double[][] syn1;
 
-
-
+    /**
+     * this is our Neural Network, where the dot product, forward propagation and sigmoid functions are created
+     * @param syn0
+     * @param syn1
+     */
     public NeuralNetwork(double[][] syn0, double[][] syn1) {
         this.syn0=syn0;
         this.syn1=syn1;
-
     }
 
-
+    /**
+     * this method gets the dot product of two matrices
+     * @param A
+     * @param B
+     * @return
+     */
     public double[][] dotProduct(double[][] A, double[][]B) {
         int m = A.length;//rows of A
         int n = A[0].length;// cols of A
@@ -33,6 +40,13 @@ public class NeuralNetwork {
             return null;
 
     }
+
+    /**
+     * this method gets the dot product of syn0 and the inputNode to get the hidden layer
+     * and the dot product of syn1 and the hidden layer to get the outputNode
+     * @param inputNodes
+     * @return
+     */
     public double[][] forwardPropagation(double[][] inputNodes){
         double[][] hiddenLayer=this.dotProduct(this.syn0,inputNodes);//this creates the hidden layer
         for(int row=0;row<hiddenLayer.length;row++){//hiddenLayer.length=3
@@ -51,7 +65,7 @@ public class NeuralNetwork {
     }
 
     /**
-     * this method creates the sigmoid funtion
+     * this method creates the sigmoid function, which returns numbers between 0 and 1
      * @param x
      * @return
      */

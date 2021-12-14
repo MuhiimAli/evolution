@@ -1,21 +1,26 @@
 package evolution.flappyBird;
-
 import javafx.scene.layout.Pane;
-
 import java.util.ArrayList;
 
+/**
+ * this class manages the pipes.
+ * It generates them, makes them scroll and deletes them
+ */
 public class PipeManager {
     private Pipe pipes;
     private ArrayList<Pipe> pipeArraylist;
     private Pane gamePane;
+    /**
+     * In the constructor method, I associate the gamePane with the PipeManager class
+     * I create an instance of the pipe class and a new arraylist
+     * @param gamePane
+     */
     public PipeManager(Pane gamePane){
         this.gamePane=gamePane;
-        this.pipeArraylist = new ArrayList<>();
+        this.pipeArraylist = new ArrayList<>();//initializing the arraylist
         this.pipes = new Pipe(this.gamePane);
-        this.pipeArraylist.add(this.pipes);
-
+        this.pipeArraylist.add(this.pipes);//adding the pipe to the arraylist
     }
-
     /**
      * this method generates pipes
      */
@@ -28,7 +33,6 @@ public class PipeManager {
             this.pipes = newPipes;
         }
         return newPipes;
-
     }
 
     /**
@@ -39,12 +43,10 @@ public class PipeManager {
             this.pipeArraylist.get(i).setXLoc(this.pipeArraylist.get(i).getXLoc()-Constants.SCROLL_RATE);
         }
         this.generatePipes();
-
-
     }
 
     /**
-     * this method deletes the pipes when they're done scrolling, when they're off the screen
+     * this method deletes the pipes when they're off the screen
      */
     public void deletePipes(){
         for(int i=0;i<this.pipeArraylist.size();i++){
@@ -63,15 +65,27 @@ public class PipeManager {
         return this.pipeArraylist.get(0);
 
     }
+
+    /**
+     * this method removes the pipes graphically
+     */
     public void removeFromPane(){
         for(int i=0;i<this.pipeArraylist.size(); i++){
             this.pipeArraylist.get(i).removeFromPane();
         }
     }
+
+    /**
+     * this method deletes the pipes logically
+     */
     public void removeLogically(){
-        for(int i=0;i<this.pipeArraylist.size(); i++){
-            this.pipeArraylist.remove(i);
-        }
+       this.pipeArraylist.clear();//clears everything from the arraylist
+
+        /*
+        Because I created my first pipe in the constructor, I have to create a pipe here too or else I would run into
+        array indexOutOfBoundsException whenever I'm trying to access my nearest pipe, which is at index 0.
+
+         */
         this.pipeArraylist = new ArrayList<>();
         this.pipes = new Pipe(this.gamePane);
         this.pipeArraylist.add(this.pipes);

@@ -8,6 +8,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
+/**
+ * this is the top-level logic class.
+ */
+
 public class FlappyBird implements Playable {
     private Pane gamePane;
     private Timeline timeline;
@@ -18,7 +22,6 @@ public class FlappyBird implements Playable {
     private Label highScoreLabel;
     private int score;
     private int highScore;
-    private Boolean isRunning;
     private PipeManager pipeManager;
     private DifferentModes modes;
 
@@ -44,20 +47,21 @@ public class FlappyBird implements Playable {
         this.pipeManager =new PipeManager(this.gamePane);
         this.modes=birds;
         this.bird=this.modes.createBird(this.gamePane,this.pipeManager, scorePane, this.timeline);
-        this.isRunning=true;
     }
 
     /**
      * this method sets up the background image
      */
-    private void setUpBackground() {//TODO figure out how to make images scroll
+    private void setUpBackground() {
         Image image = new Image("./evolution/flappyBird/image.png", Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT, true, false);//this instantiates an image
         BackgroundImage background = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         this.gamePane.setBackground(new Background(background));//this sets the background of the gamePane for flappyBird
-
     }
 
+    /**
+     * this method updates the state of the game with the timeline
+     */
     @Override
     public void updateGame() {
         this.pipeManager.scrollPipes();
@@ -65,18 +69,23 @@ public class FlappyBird implements Playable {
         this.bird.updateWithTimeline();//updates with the timeline
         this.setScoreLabel();
     }
-
+    /**
+     * This method restarts the game when the restart button is clicked.
+     */
     @Override
-    public void reStart(){//TODO restart method bug
+    public void reStart(){
         this.timeline.stop();
         this.score = 0;
         this.gamePane.getChildren().clear();
         this.scoreLabel.setText("score: " + this.score);
         this.pipeManager=new PipeManager(this.gamePane);
         this.bird=this.modes.createBird(this.gamePane,this.pipeManager, scorePane, this.timeline);//this creates birds
-
         this.timeline.play();
     }
+    /**
+     * this method ends the game when the gameOver condition is true for the game that is currently playing
+     * @return
+     */
     @Override
     public boolean gameOver(){
         if(this.bird.gameOver()){
@@ -85,10 +94,19 @@ public class FlappyBird implements Playable {
 
     return false;
     }
+
+    /**
+     * this method calls the handleKeypress methods defined in the different bird classes
+     * @param e
+     */
     @Override
     public void handleKeyPressed(KeyEvent e) {
         this.bird.handleKeyPress(e);
     }
+
+    /**
+     * this method tracks the bird’s score, which increases by one for each pipe the bird passes through
+     */
     private void setScoreLabel(){
         if (this.pipeManager.nearestPipe().getXLoc()==Constants.PIPE_WIDTH) {
             this.score=this.score+1;

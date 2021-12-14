@@ -31,8 +31,6 @@ public class Tetris implements Playable {
     private VBox buttonPane2;
     private BorderPane root;
 
-
-
     /**
      * this is the constructor of the Tetris class, it is associated with the gamePane and the buttonPane.
      */
@@ -165,7 +163,6 @@ public class Tetris implements Playable {
         this.scoreLabel.setText("score: " + this.score);
         this.board.setUpBoard();
         this.generatePieces();
-        System.out.println(this.gameOver());
         this.timeline.play();
 
     }

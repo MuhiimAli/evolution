@@ -10,8 +10,16 @@ public class SmartBird{
     private double[][] inputArray;
     private double[][] syn0;
     private double[][] syn1;
+
+    /**
+     * this is our smart bird class,
+     * it initializes the neural network class
+     * it creates the input array and the weights
+     * and takes care of everything a smart bird should have/know about
+     */
+
     public SmartBird(Pane gamePane, PipeManager pipeManager){
-        this.syn0 = new double[Constants.SYN0_ROW][Constants.SYN0_COL];//syn0= new double[hiddenNodes=3][inputNodes=4]//todo const
+        this.syn0 = new double[Constants.SYN0_ROW][Constants.SYN0_COL];//syn0= new double[hiddenNodes=3][inputNodes=4]/
         this.syn1 = new double[Constants.SYN1_ROW][Constants.SYN1_COL];//syn1=new double[outputNodes=1][hiddenNodes=3]
         this.setSyn0();
         this.setSyn1();
@@ -19,8 +27,6 @@ public class SmartBird{
         this.pipeManager=pipeManager;
         this.gamePane = gamePane;
         this.smartBird = new ManualBird(this.gamePane, pipeManager);
-
-
     }
 
     /**
@@ -39,13 +45,16 @@ public class SmartBird{
         this.smartBird = new ManualBird(this.gamePane, pipeManager);
     }
 
+    /**
+     * this method makes the bird jump when it is less than 0.5
+     */
     public void reactAtOutputValue(){
         double[][] outputs=this.brain.forwardPropagation(this.createInputNodes());
         if(outputs[0][0]>0.5) {//the bird will flap
             this.smartBird.jump();
         }
         else {
-                this.smartBird.updateBirdVelocity();
+                this.smartBird.updateBirdVelocity();//the bird will fall down
         }
     }
 
@@ -66,14 +75,11 @@ public class SmartBird{
         return inputArray;
 
     }
-//    public double getYLoc(){
-//        return this.smartBird.getYLoc();
-//
-//    }
-//    public void setYLoc(double y){
-//        this.smartBird.setYLoc(y);
-//
-//    }
+
+    /**
+     * this method removes the bird graphically when it intersects with a pipe or falls down
+     * @return returns true if the bird intersects with the pipes or falls down
+     */
     public boolean checkIntersection(){
         if(this.smartBird.checkIntersection(pipeManager.nearestPipe(),pipeManager.nearestPipe())){
             this.smartBird.removeFromPane();
@@ -133,7 +139,7 @@ public class SmartBird{
     }
 
     /**
-     * this method fills the elements of syn1 with random values between -1 and 1
+     * initializing the weights(syn1) with random values between -1 and 1
      */
     private void setSyn1() {
         for (int row = 0; row < this.syn1.length; row++) {
@@ -146,6 +152,7 @@ public class SmartBird{
 
     /**
      * this method mutates the values of syn0 that are less than the mutation rate
+     * We mutate because we don't want all the birds to learn and act the same
      */
     public void mutateSynO(){
         for(int i=0;i<this.syn0.length; i++ ){

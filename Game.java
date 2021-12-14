@@ -9,9 +9,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-
-
-
+/**
+ * this enum instantiates the different game classes
+ */
 public enum Game {
     SMART("SMART BIRD"),MULTIPLAYER("MULTIPLAYER"), MANUAL("MANUAL FLAPPY BIRD"),SNAKE("SNAKE"),TETRIS("TETRIS");
     private String name;
@@ -39,6 +39,11 @@ public enum Game {
     Game(String name){
         this.name=name;
     }
+
+    /**
+     * gets the name of the game class
+     * @return
+     */
     public String getName(){
         return this.name;
     }

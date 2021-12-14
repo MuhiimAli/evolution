@@ -1,11 +1,15 @@
 package evolution.flappyBird;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+
+/**
+ * This is class creates the bird, and contains all the methods that control the bird's movement and position and let
+ * the bird respond to the key events (when the spaceBar is pressed, the bird jumps up)
+ */
 
 public class ManualBird implements Flappable{
     private Pane gamePane;
@@ -16,6 +20,14 @@ public class ManualBird implements Flappable{
     private double velocity;
     private double position;
     private PipeManager pipeManager;
+
+    /**
+     * The constructor method calls the createBird method, which creates all the shapes that make up the bird
+     * it sets the y and x location of the bird
+     * calls teh setOpacity method, which sets the opacity of the composite shape
+     * @param gamePane
+     * @param pipeManager
+     */
     public ManualBird(Pane gamePane, PipeManager pipeManager){
         this.pipeManager=pipeManager;
         this.gamePane=gamePane;
@@ -26,64 +38,79 @@ public class ManualBird implements Flappable{
     }
 
     /**
-     * this method creates all the components of the bird
+     * this method creates the bird, and controls the birds velocity and position
      */
 
     private void createBird(){
-        int red = (int) (Math.random() * 256);//todo constants
-        int green = (int) (Math.random() * 256);//todo constants
-        int blue = (int) (Math.random() * 256);//todo constants
+        int red = (int) (Math.random() * Constants.COLOR_PALETTE);
+        int green = (int) (Math.random() * Constants.COLOR_PALETTE);
+        int blue = (int) (Math.random() * Constants.COLOR_PALETTE);
         Color customColor = Color.rgb(red, green, blue);
-        this.body=new Circle(100,200,10);//todo constants
-        this.eye=new Circle(104,196,4);//todo constants
-        this.pupil=new Circle(104,196,2);//todo constants
+        this.body=new Circle(Constants.BIRD_CENTER_X,Constants.BIRD_CENTER_Y,Constants.BIRD_RADIUS);
+        this.eye=new Circle(Constants.EYE_CENTER_X,Constants.EYE_CENTER_Y,Constants.EYE_RADIUS);
+        this.pupil=new Circle(Constants.PUPIL_CENTER_X,Constants.PUPIL_CENTER_Y,Constants.PUPIL_RADIUS);
         this.body.setFill(customColor);
         this.eye.setFill(Color.WHITE);
-        this.beak=new Polygon(110,198,115,203,107,208);//todo constants
+        this.beak=new Polygon(Constants.BEAK_X1,Constants.BEAK_Y1,Constants.BEAK_X2
+                ,Constants.BEAK_Y2, Constants.BEAK_X3,Constants.BEAK_Y3);
         this.gamePane.getChildren().addAll(this.body,this.eye,this.pupil,this.beak);
     }
+
+    /**
+     * sets the opacity of each shape
+     */
     public void setOpacity(){
-        this.body.setOpacity(0.5);
+        this.body.setOpacity(1);
         this.beak.setOpacity(1);
         this.eye.setOpacity(1);
         this.pupil.setOpacity(1);
-
     }
-
-
+    /**
+     * this method assigns and updates the bird's velocity and its y position
+     */
     public void updateBirdVelocity(){
         this.velocity = this.velocity + Constants.GRAVITY * Constants.DURATION;
         this.position = this.position + this.velocity * Constants.DURATION;
         this.setYLoc(this.position);
-
     }
+    /**
+     * this method gets updated with the timeline
+     */
     @Override
     public void updateWithTimeline(){
         this.updateBirdVelocity();
     }
 
     /**
-     * this method changes the velocity of the bird negative(makes it go up)
+     * this method changes the velocity of the bird to negative and makes it go up.
      */
     public void jump(){
-        if(this.body.getCenterY()>60){
+        if(this.body.getCenterY()>=Constants.JUMP_THRESHOLD){
             this.velocity=Constants.REBOUND_VELOCITY;
             this.updateBirdVelocity();
         }
 //
     }
+
+    /**
+     * sets the x location of the bird
+     * @param x
+     */
     public void setXLoc(double x){
         this.beak.setLayoutX(x);
-        this.body.setCenterX(x+100);//todo constants
-        this.eye.setCenterX(x+104);//todo constants
-        this.pupil.setCenterX(x+104);//todo constants
+        this.body.setCenterX(x+Constants.BIRD_CENTER_X);
+        this.eye.setCenterX(x+Constants.EYE_CENTER_X);
+        this.pupil.setCenterX(x+Constants.PUPIL_CENTER_X);
 
     }
+    /**
+     * sets the y location of the bird
+     */
     public void setYLoc(double y){
         this.beak.setLayoutY(y);
-        this.body.setCenterY(y+200);//todo constants
-        this.pupil.setCenterY(y+196);//todo constants
-        this.eye.setCenterY(y+196);//todo constants
+        this.body.setCenterY(y+Constants.BIRD_CENTER_Y);
+        this.pupil.setCenterY(y+Constants.PUPIL_CENTER_Y);
+        this.eye.setCenterY(y+Constants.EYE_CENTER_Y);
         this.position=y;
 
     }
@@ -110,7 +137,10 @@ public class ManualBird implements Flappable{
         return false;
     }
 
-
+    /**
+     * ends the game when the bird either falls or intersects with the pipes
+     * @return
+     */
     @Override
     public Boolean gameOver(){
         if(this.checkIntersection(this.pipeManager.nearestPipe(), this.pipeManager.nearestPipe())){
@@ -126,12 +156,15 @@ public class ManualBird implements Flappable{
      */
     @Override
     public void handleKeyPress(KeyEvent e) {
-        KeyCode keyPressed = e.getCode();
-        switch (keyPressed) {
-            case SPACE: default:
+        if(e.getCode()==KeyCode.SPACE){
                 this.jump();
         }
     }
+
+    /**
+     * a getter method that gets the current y location of the bird
+     * @return
+     */
     public double getYLoc(){
        return this.body.getCenterY();
     }

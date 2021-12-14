@@ -1,0 +1,42 @@
+Overview:
+The arcade consists of multiple games: Tetris, Snake, Manual FlappyBird, Multiplayer, and smart Flappy Bird
+All the game classes share the same timeline, same pause method and the arcade class, which is a top-level graphic class that
+is even higher than the paneOrganizer.
+Design choices:
+
+interface:
+    All the game classes implement the playable interface, which declares the restart, gameOver, updateGame, and handleKeyPress method.
+    I used an interface because all the game classes have those methods listed above but they define it differently.
+    The bird classes(Manual, Multiplayer, smart) also implement an interface called flappable, which declares the gameOVer, updateWithTimeline
+    and handleKeyPress methods.
+Containment:
+ I used containment in our program to add a high level osf abstraction and delegation to our program.
+ -The App class contains the arcade class
+ -The smartBird and multiplayerBird classes contain the ManualBird class
+ -The smartBird class contains the NeuralNetwork class
+ -The pipeManager class contains the pipe class
+ -
+
+Association:
+
+
+
+
+
+
+Enums:
+    I used enums in multiple places t
+-SpeedLevel Enum:
+-Game Enum:
+    In this enum, I instantiated the different game classes in enum to make it extensible to add other arcade games.
+    This creates a level of abstraction because the arcade class doesn't need to know about which game is currently playing
+-Different Modes:
+    I instantiate the
+
+
+
+
+
+Constructor Overloading:
+-I used constructor overloading because sometimes I wanted to create birds with random weights and other times
+I wanted to initialize the birds with the neural network of a parent.

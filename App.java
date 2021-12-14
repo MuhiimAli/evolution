@@ -9,7 +9,7 @@ import javafx.stage.Stage;
   * will need to fill in the constructor to instantiate your game.
   *
   * Class comments here...
-  *
+  *this class adds the root to the scene, sets the scene and shows the stage.
   */
 
 public class App extends Application {
