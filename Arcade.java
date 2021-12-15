@@ -156,7 +156,7 @@ public class Arcade {
      * @param game takes in enum
      */
     public void startGame(Game game) {
-        this.playable = game.createGame(this.timeline, this.root, this.gamePane, this.buttonPane);
+        this.playable = game.createGame(this.timeline, this.root, this.gamePane);
         this.createGameButtons();
         this.root.setCenter(this.gamePane);
         this.gamePane.setOnKeyPressed((KeyEvent e) -> this.handlePause(e));
@@ -233,6 +233,7 @@ public class Arcade {
      */
     private void back(){
         this.timeline.stop();
+        this.isPaused=false;
         this.gamePane.getChildren().clear();
         this.buttonPane.getChildren().clear();
         this.timeline.getKeyFrames().clear();

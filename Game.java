@@ -6,7 +6,6 @@ import evolution.snake.SnakeGame;
 import evolution.tetris.Tetris;
 import javafx.animation.Timeline;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 /**
@@ -15,7 +14,7 @@ import javafx.scene.layout.Pane;
 public enum Game {
     SMART("SMART BIRD"),MULTIPLAYER("MULTIPLAYER"), MANUAL("MANUAL FLAPPY BIRD"),SNAKE("SNAKE"),TETRIS("TETRIS");
     private String name;
-    public Playable createGame(Timeline timeline, BorderPane root, Pane gamePane, HBox buttonPane) {
+    public Playable createGame(Timeline timeline, BorderPane root, Pane gamePane) {
         Playable playable;
         switch (this) {
             case SMART:
@@ -31,7 +30,7 @@ public enum Game {
                 playable = new SnakeGame(timeline, root, gamePane);
                 break;
             case TETRIS: default:
-                playable = new Tetris(timeline, root, gamePane, buttonPane);
+                playable = new Tetris(timeline, root, gamePane);
                 break;
             }
             return playable;

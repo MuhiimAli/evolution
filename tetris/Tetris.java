@@ -22,7 +22,6 @@ public class Tetris implements Playable {
     private Board board;
     private Timeline timeline;
     private Piece piece;
-    private HBox buttonPane;
     private double score;
     private double highScore;
     private Label scoreLabel;
@@ -34,7 +33,7 @@ public class Tetris implements Playable {
     /**
      * this is the constructor of the Tetris class, it is associated with the gamePane and the buttonPane.
      */
-    public Tetris(Timeline timeline,BorderPane root, Pane gamePane, HBox buttonPane) {
+    public Tetris(Timeline timeline,BorderPane root, Pane gamePane) {
         this.timeline=timeline;
         this.root=root;
         this.gamePane = gamePane;
@@ -43,7 +42,6 @@ public class Tetris implements Playable {
         this.buttonPane2=new VBox();
         this.buttonPane2.setPrefWidth(Constants.BUTTON2_PANE_WIDTH);
         this.buttonPane2.setPrefHeight(Constants.BUTTON2_PANE_HEIGHT);
-        this.buttonPane = buttonPane;
         this.root.setRight(this.buttonPane2);
         this.buttonPane2.setAlignment(Pos.CENTER);
         this.buttonPane2.setSpacing(Constants.BUTTON_SPACING);

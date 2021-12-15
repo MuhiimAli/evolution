@@ -65,9 +65,9 @@ public class Population implements Flappable{
         this.currentFitness=new Label();
         this.generation=new Label();
         this.avgFitness=new Label();
-        this.scorePane.getChildren().addAll(speedPane, labelPane);//adding the HBox and VBox to the pane
-        labelPane.getChildren().addAll(this.alive, this.avgFitness, this.bestFitness, this.bestFitnessAllTime, this.generation, this.currentFitness);//adding all the stats label to the pane
-        speedPane.setAlignment(Pos.TOP_RIGHT);
+        this.scorePane.getChildren().addAll(this.speedPane, this.labelPane);//adding the HBox and VBox to the pane
+        this.labelPane.getChildren().addAll(this.alive, this.avgFitness, this.bestFitness, this.bestFitnessAllTime, this.generation, this.currentFitness);//adding all the stats label to the pane
+        this.speedPane.setAlignment(Pos.TOP_RIGHT);
         this.createSmartBirds();
         this.statsBar();
     }
@@ -234,7 +234,7 @@ public class Population implements Flappable{
             Button button1 = new Button(speedLevels.getName());//creates a button at each iteration
             button1.setOnAction((ActionEvent e) -> this.switchSpeedLevels(speedLevels));//
             button1.setFocusTraversable(false);
-            speedPane.getChildren().addAll(button1);//adds the buttons to the speedPane
+            this.speedPane.getChildren().addAll(button1);//adds the buttons to the speedPane
         }
     }
     /**
@@ -250,12 +250,12 @@ public class Population implements Flappable{
     public void statsLabel(){
         this.alive.setText("Alive: "+ this.populationArraylist.size());
         this.bestFitnessLastGen=Math.max(this.fitness, this.bestFitnessLastGen);
-        this.bestFitness.setText("Best Fitness Last Gen: " + bestFitnessLastGen );
+        this.bestFitness.setText("Best Fitness Last Gen: " + this.bestFitnessLastGen );
         this.bestFitnessAllTimes=Math.max(this.bestFitnessAllTimes, this.bestFitnessLastGen);
         this.bestFitnessAllTime.setText("Best Fitness All Time: "+ this.bestFitnessAllTimes);
         this.generation.setText("Gen: "+ this.gens);
         this.avgFitness.setText("Avg Fitness LastGen: "+ this.avgFitnessLastGen);
-        this.currentFitness.setText("Current Fitness:" + fitness);
+        this.currentFitness.setText("Current Fitness:" + this.fitness);
     }
 
 
