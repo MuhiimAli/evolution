@@ -75,7 +75,7 @@ public class Population implements Flappable{
      * creates 50 birds with random weights
      */
     private void createSmartBirds(){
-        for(int i=0;i<50;i++){
+        for(int i=0;i<Constants.POPULATION_SIZE;i++){
             SmartBird newSmartBirds= new SmartBird(this.gamePane, this.pipeManager);//creates the smart birds
             this.populationArraylist.add(newSmartBirds);//adds the smart birds to the arraylist
         }
@@ -87,7 +87,7 @@ public class Population implements Flappable{
      */
     public void nextGeneration(){
         this.gens++;
-        for(int i=0; i< 50; i++) {
+        for(int i=0; i< Constants.POPULATION_SIZE; i++) {
                 if (i % 3 == 0) {
                     /*
                     gets a copies of the weights of the fittest birds
@@ -133,7 +133,7 @@ public class Population implements Flappable{
      */
     public void createNextGeneration() {
         if (this.populationArraylist.size() == 0){//checks if the arraylist is empty
-            this.avgFitnessLastGen=this.sum/50;
+            this.avgFitnessLastGen=this.sum/Constants.POPULATION_SIZE;
             this.sum=0;
             if (this.fitness >Constants.GEN0_PASS) {//400 is how long it takes a bird to get to the second pipe
                 this.fitness = 0;
@@ -254,7 +254,7 @@ public class Population implements Flappable{
         this.bestFitnessAllTimes=Math.max(this.bestFitnessAllTimes, this.bestFitnessLastGen);
         this.bestFitnessAllTime.setText("Best Fitness All Time: "+ this.bestFitnessAllTimes);
         this.generation.setText("Gen: "+ this.gens);
-        this.avgFitness.setText("Avg Fitness LastGen: "+ this.avgFitnessLastGen);
+        this.avgFitness.setText("Avg Fitness Last Gen: "+ this.avgFitnessLastGen);
         this.currentFitness.setText("Current Fitness:" + this.fitness);
     }
 

@@ -78,6 +78,8 @@ public class Constants {
     public static final double Y_LOC_BIRD2=20;
     public static final double GEN0_PASS=150;
     public static final double KILL_SWITCH=10000;
+    public static final int POPULATION_SIZE=50;
+
 
 
 
