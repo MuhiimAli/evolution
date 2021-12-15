@@ -87,7 +87,7 @@ public class Population implements Flappable{
      */
     public void nextGeneration(){
         this.gens++;
-        for(int i=0; i< Constants.POPULATION_SIZE; i++) {
+        for(int i=0; i< Constants.POPULATION_SIZE; i++) {//loops through the population arraylist
                 if (i % 3 == 0) {
                     /*
                     gets a copies of the weights of the fittest birds
