@@ -53,7 +53,7 @@ public class FlappyBird implements Playable {
      * this method sets up the background image
      */
     private void setUpBackground() {
-        Image image = new Image("./evolution/flappyBird/image.png", Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT, true, false);//this instantiates an image
+        Image image = new Image("flappyBird/image.png", Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT, true, false);//this instantiates an image
         BackgroundImage background = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         this.gamePane.setBackground(new Background(background));//this sets the background of the gamePane for flappyBird
