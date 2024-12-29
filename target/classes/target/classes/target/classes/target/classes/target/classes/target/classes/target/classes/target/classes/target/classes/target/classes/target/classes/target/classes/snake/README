@@ -1,0 +1,42 @@
+Snake README
+
+Overview:
+    My Snake app has a snake that moves across a grid of squares and changes
+    directions via the arrow keys (up/down/left/right). The goal is for the
+    snake to eat a pellet, represented by circles, from the squares. When the
+    snake eats a pellet, the snake grows one square in length and another pellet
+    is spawned in a random location on the board. The game ends when the snake
+    moves into itself or moves off screen.
+
+Design Choices:
+    In the PaneOrganizer, I chose to use a BorderPane with a Pane to represent
+    the main game and an HBox to hold the score and quit button. I then needed
+    to associate the gamePane and score label with the game so it could add
+    graphical elements to the game and update the score.
+
+    I delegated to a BoardSquare class as a wrapper for one square on the board
+    and exposed just a few important methods that change the state of the square
+    (reset, addSnake, addPellet) and access its state (isEmpty, getRow, getCol).
+    With this design, no one can modify the square in any other way externally.
+
+    Thus, I also have a Board class as a wrapper for a 2D array of BoardSquares.
+    The contents of the board should never change, so the Board class just has
+    two accessor methods: one to get a tile at a specific row/col, and one to get
+    a random square that's available.
+
+    I have a Direction enum to track which direction (right/up/down/left) the
+    snake is moving. That enum also has methods to check the opposite direction
+    and the new row and column value when moving in that direction. These methods
+    are used to simplify the logic in the Snake class.
+
+    I use a Snake class as a wrapper for an ArrayList of BoardSquares to
+    represent which squares the snake is currently on top of. It only has methods
+    to move and changeDirection. In order to communicate with the game, I created
+    a SnakeMoveResult enum, which indicates if the move was successful or resulted
+    in game over, and the score increase.
+
+Known Bugs: None
+
+Debugging Collaborators: lzimbali
+
+Hours Spent: 22 Hours

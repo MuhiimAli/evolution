@@ -1,0 +1,137 @@
+Overview:
+Our Tetris game allows the player to move tetris pieces on a 2D array board.
+The pieces move under a timeline that changes according to the difficulty levels.
+The player can also move the piece left and right with key inputs.
+Additionally, the pieces can also rotate with the up key input. To drop the piece, the player can press the space bar,
+and move down by one more square by pressing the down arrow key.
+The scores also increment depending on line clearing and adding pieces to the board.
+
+The game has classes, the App class, the PaneOrganizer class, the Tetris class,
+the Piece class, the Board square, Board class, and the Constants class.
+
+They interact in the following ways:
+-The App class contains instances of the PaneOrganizer class and the scene.
+The App class is the top level class for the program, it sets up the stage (Outer most graphical container)
+
+-The PaneOrganizer class contains instances of the Tetris class and all the panes
+(the PaneOrganizer organises the panes graphically).
+
+-The Tetris class is where all the animation including the interaction of both the pieces and the board takes place,
+it contains all the moving elements in the scene graph. It contains instances of the pieces, and the board.
+
+-The Piece class:
+This is the class that contains the tetris pieces in the game. To enhance loose coupling in our program,
+all the methods associated with movement of the Tetris pieces are defined and implemented here.
+The piece class is also associated with the board, this is to allow us to make the pieces part of the board once they stop moving.
+
+-The Board class:
+This is the class that contains all graphical elements that make up the board.
+In this class, all methods associated with the Board are implemented here.
+
+-The BoardSquare class:
+This is a wrapper class that contains a javafx class - a rectangle.
+In this class, a rectangle of the same width and length size is made which is what the board and tetris pieces are made of.
+This allows us to not create a new Rectangle in the Piece class and the Board class,
+because the BoardSquare class wraps around the Rectangle’s characteristics and methods in javafx.
+
+-The Constants class:
+To make the program  more understandable, we created a constants class that contains all the constants used in the program.
+This reduces repetition of numbers in the program and also improves the general design of the program.
+
+-The enum class:
+The enum class contains the difficulty levels that change with the timeline.
+The enum class contains represents how the difficulty levels react in the game when clicked.
+
+Design Choices:
+
+-Containment:
+We used containment in our program to add a high level osf abstraction and delegation to our program.
+-The App class contains the PaneOrganizer and the scene.
+-The PaneOrganizer contains the Tetris class and all the Panes.
+-The Tetris class contains the Piece class and the Board class.
+
+-Association:
+We used association in our program to let the piece class,
+board class and Tetris class know about the same pane(gamePane), so that they’re stored in the same pane graphically.
+Also, we used association to let the Piece know about the board, so that every time a piece has no spot to move to
+(intersects another piece or an edge of the board), that piece should be added to the board, so that it does not respond to any more keyPresses.
+
+
+-Switch statements:
+Switch statements were also used through out our program. We used them to semi randomly generate the
+seven pieces in the generate pieces method in the game class.
+
+-For loops:
+For loops were constantly used in this program inorder to facilitate the execution of specific instructions(methods)
+repeatedly along the whole array. For example, in the checkMoveValidity method in the Pieces class,
+we used for loops inorder to execute this method along the whole array of tetrisSquares.
+We want all the squares to check whether movement into a certain spot is valid or not.
+<public boolean checkMoveValidity(){
+   for (int i = 0; i < this.tetrisSquares.length; i++) {
+       int row=this.tetrisSquares[i].getYLoc()/Constants.SQUARE_SIZE;
+       int col=this.tetrisSquares[i].getXLoc()/Constants.SQUARE_SIZE;
+       while(this.board.tileAt(row+1, col)!=null){
+           System.out.println(this.board.tileAt(row+1, col+1)!=null);
+           return true;
+       }
+  }
+   return false;
+}>
+
+
+-If statements:
+If statements were also frequently used throughout this whole program.
+This is because the pieces needed to constantly check if spots are free to move to, rotate in and many other functionalities.
+For example, this is the pause method, it pauses the game once the P key is pressed.
+We used if statements in this method inorder for the game to know when to pause and unpause when the P key is pressed.
+<public void pause() {
+   paused.setFont(Font.font("ARIAL", FontPosture.ITALIC, 40));
+   paused.setLayoutX(6 * Constants.SQUARE_SIZE);
+   paused.setLayoutY(12 * Constants.SQUARE_SIZE);
+   paused.setTextFill(Color.RED);
+   if (this.isPaused) { //if the game is paused, then when the p key is pressed,
+   //the game will unpause because we set the isPaused boolean to false.
+       this.timeline.pause();
+       this.gamePane.getChildren().add(this.paused);
+       this.isPaused = false;
+   } else {
+       this.timeline.play();
+       this.gamePane.getChildren().remove(this.paused);
+       this.gamePane.setFocusTraversable(true);
+       this.isPaused = true;
+   }
+}>
+
+
+-While loops:
+We also used while loops in this program where certain conditions needed to be satisfied inorder
+for certain methods to execute on all pieces. For example, the tileAt method in the Board class, we used while loops so that,
+as long as a square on a row that is greater than 0 and less than the total number of rows,
+the method will return the location of that square in [row][col].
+<public BoardSquare tileAt(int row, int col) {
+   while (row >= 0 && row < Constants.NUM_ROWS && col >= 0 && col < Constants.NUM_COLS) {
+       return this.board[row][col];
+   }
+   return null;
+}>
+
+-Enums:
+In our program, we used enums to store the different difficulty levels - Hard, Medium and Easy.
+We also used the same enum class to update scores and high scores since they depend on difficulty levels.
+
+
+-Loose Coupling:
+We implemented Loose coupling in our program by limiting the methods relating to specific classes to be implemented in those classes.
+
+Parameter passing:
+To access the enums, we used parameter passing in the switch difficulty method in the tetris class.
+<private void switchDifficulty(Difficulty difficulty) {
+         this.timeline.setRate(difficulty.setDifficulty());
+         this.difficulty = difficulty;
+     }>
+
+Known Bugs:
+There are no known bugs in our program.
+
+Debugging Collaborators:
+None

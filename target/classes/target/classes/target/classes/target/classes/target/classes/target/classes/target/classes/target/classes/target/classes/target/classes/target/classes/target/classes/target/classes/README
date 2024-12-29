@@ -2,11 +2,6 @@ Overview:
 The arcade consists of multiple games: Tetris, Snake, Manual, Multiplayer, and smart Flappy Bird
 All the game classes share the same timeline and same pause method.
 
-Demo link:
-https://drive.google.com/file/d/1OH01yFO5Vc90y0bCmS7xV_Xrm4AyUvVl/view?usp=sharing
-
-
-
 The classes in the evolution package interact in the following:
 -The app class
     contains instance of the arcade class. It adds the root to the scene and sets the stage
